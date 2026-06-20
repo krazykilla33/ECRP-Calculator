@@ -39,6 +39,28 @@ const INGREDIENTS = ['Plant', 'Acid', 'Lime', 'Sodium', 'Muriatic', 'Toluene', '
 const DEFAULT_OPEN_LABS = ['Island', 'Galilee', 'Quarry', 'Paleto Train', 'Cement', '', '', ''];
 const LAB_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
+
+function zeroQuantities() {
+  const quantities = {};
+  for (const tier of DATA.tiers) {
+    quantities[tier.name] = {};
+    for (const product of DATA.products) {
+      quantities[tier.name][product] = 0;
+    }
+  }
+  return quantities;
+}
+
+function resetFullTablesToZero() {
+  for (const key of Object.keys(TABLES)) {
+    if (!state.setRows[key]) state.setRows[key] = { product: TABLES[key].allowedProducts[0], fullTables: 0 };
+    state.setRows[key].fullTables = 0;
+  }
+  save();
+  buildFixedSetRows();
+  calculateSetTotals();
+}
+
 function defaultState() {
   return {
     quantities: structuredClone(DATA.defaultQuantities),
@@ -294,9 +316,15 @@ document.getElementById('bonusEnabled').addEventListener('change', e => {
 });
 
 document.getElementById('resetBtn').addEventListener('click', () => {
-  localStorage.removeItem(storeKey);
-  location.reload();
+  state = defaultState();
+  state.quantities = zeroQuantities();
+  save();
+  buildQuantityGrid();
+  buildSetCalculator();
+  calculateProducts();
 });
+
+document.getElementById('resetFullTablesBtn').addEventListener('click', resetFullTablesToZero);
 
 buildQuantityGrid();
 buildSetCalculator();
