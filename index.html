@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ECRP Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">GitHub Pages Web App</p>
+      <h1>ECRP Calculator</h1>
+      <p>Spreadsheet-style product and set calculations in a browser app.</p>
+    </div>
+    <button id="resetBtn" class="secondary">Reset saved values</button>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="section-title">
+        <h2>Product Value Calculator</h2>
+        <label class="toggle"><input id="bonusEnabled" type="checkbox" /> Enable bonus</label>
+      </div>
+      <div id="quantityGrid" class="table-wrap"></div>
+      <div class="summary-grid">
+        <div class="summary"><span>Grand Total</span><strong id="grandTotal">$0</strong></div>
+        <div class="summary"><span>Total With Bonus</span><strong id="totalWithBonus">$0</strong></div>
+        <div class="summary"><span>Bonus Total</span><strong id="bonusTotal">$0</strong></div>
+      </div>
+      <div id="productBreakdown" class="table-wrap"></div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <h2>Set / Lab Calculator</h2>
+        <button id="addSetRow" class="secondary">Add row</button>
+      </div>
+      <div id="setRows" class="set-rows"></div>
+      <div class="summary-grid">
+        <div class="summary"><span>Total Cost</span><strong id="setCost">$0</strong></div>
+        <div class="summary"><span>Total Value</span><strong id="setValue">$0</strong></div>
+        <div class="summary"><span>Total Profit</span><strong id="setProfit">$0</strong></div>
+        <div class="summary"><span>Total Weight</span><strong id="setWeight">0</strong></div>
+        <div class="summary"><span>Total Time</span><strong id="setTime">0m</strong></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Data</h2>
+      <p class="muted">This starter app uses data extracted from your workbook into <code>data.js</code>. Edit that file on GitHub when prices, labs, or product data change.</p>
+    </section>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
