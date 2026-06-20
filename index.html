@@ -11,7 +11,7 @@
     <div>
       <p class="eyebrow">GitHub Pages Web App</p>
       <h1>ECRP Calculator</h1>
-      <p>Spreadsheet-style product and set calculations in a browser app.</p>
+      <p>Product values, open labs, cooking plans, ingredients, profit, time, and weight.</p>
     </div>
     <button id="resetBtn" class="secondary">Reset saved values</button>
   </header>
@@ -31,48 +31,72 @@
       <div id="productBreakdown" class="table-wrap"></div>
     </section>
 
-    <section class="sheet-card" id="setCalculator">
-      <div class="warning-bar">Change the “Open Labs” section when one opens, or closes</div>
-
-      <div class="sheet-grid">
-        <div class="open-labs-panel">
-          <div class="sheet-heading">Open Labs</div>
-          <div id="openLabsList" class="open-labs-list"></div>
-          <div class="last-update">Last update:<br><span id="lastUpdate"></span></div>
+    <section class="card app-lab-card" id="setCalculator">
+      <div class="section-title lab-title-row">
+        <div>
+          <p class="eyebrow">Set / Lab Calculator</p>
+          <h2>Open Labs & Cooking Plan</h2>
+          <p class="muted">Update the open labs list when a lab opens or closes. Then choose which open lab you are cooking at.</p>
         </div>
+        <div class="last-update-pill">Last update: <span id="lastUpdate"></span></div>
+      </div>
 
-        <div class="set-main-panel">
-          <div class="top-calc-row">
-            <div class="mini-cell lab-letter-head">Lab</div>
-            <select id="activeLabSelect" class="active-lab-select"></select>
-            <div class="mini-cell heading">Table Totals</div>
-            <div class="mini-cell heading">Cooking</div>
-            <div class="mini-cell heading">Full Tables</div>
-            <div class="mini-cell heading">Total Time</div>
-            <div class="mini-cell heading">Total Weight</div>
+      <div class="lab-app-layout">
+        <aside class="open-labs-card">
+          <div class="panel-head">
+            <h3>Open Labs</h3>
+            <span>Slots A-H</span>
+          </div>
+          <div id="openLabsList" class="open-labs-list"></div>
+        </aside>
+
+        <div class="lab-workspace">
+          <div class="active-lab-card">
+            <div>
+              <label for="activeLabSelect">Cooking at</label>
+              <select id="activeLabSelect" class="active-lab-select"></select>
+            </div>
+            <div id="activeLabStats" class="lab-stats"></div>
           </div>
 
-          <div id="fixedSetRows" class="fixed-set-rows"></div>
+          <div class="table-builder">
+            <div class="panel-head">
+              <h3>Table Setup</h3>
+              <span>Product choices are locked to the correct table type</span>
+            </div>
+            <div id="fixedSetRows" class="cook-card-grid"></div>
+          </div>
 
-          <div class="lower-grid">
-            <div class="ingredients-block">
-              <div class="block-title">Ingredients REQUIRED</div>
+          <div class="results-dashboard">
+            <div class="summary"><span>Total Cost</span><strong id="setTotalCost">$0</strong></div>
+            <div class="summary"><span>Total Value</span><strong id="setTotalValue">$0</strong></div>
+            <div class="summary positive"><span>Total Profit</span><strong id="setTotalProfit">$0</strong></div>
+            <div class="summary"><span>Total Weight</span><strong id="setTotalWeight">0</strong></div>
+            <div class="summary"><span>Total Time</span><strong id="setTotalTime">0m</strong></div>
+          </div>
+
+          <div class="detail-grid">
+            <div class="detail-card">
+              <h3>Ingredients Required</h3>
               <div id="ingredientsTable"></div>
             </div>
-
-            <div class="drugs-block">
+            <div class="detail-card">
+              <h3>Total Drugs</h3>
               <div id="totalDrugsTable"></div>
-              <div class="bonus-table">
-                <div class="block-title">Bonus Payout</div>
-                <div class="kv-row"><span>Meth</span><strong>10%</strong></div>
-                <div class="kv-row"><span>Heroin</span><strong>10%</strong></div>
-                <div class="kv-row"><span>Crack</span><strong>10%</strong></div>
-              </div>
             </div>
-
-            <div class="money-blocks">
+            <div class="detail-card">
+              <h3>Per Batch</h3>
               <div id="perBatchTable"></div>
+            </div>
+            <div class="detail-card">
+              <h3>Per Hour</h3>
               <div id="perHourTable"></div>
+            </div>
+            <div class="detail-card bonus-detail">
+              <h3>Bonus Payout</h3>
+              <div class="bonus-pill-row">
+                <span>Meth 10%</span><span>Heroin 10%</span><span>Crack 10%</span>
+              </div>
             </div>
           </div>
         </div>

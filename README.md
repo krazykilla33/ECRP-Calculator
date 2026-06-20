@@ -1,24 +1,34 @@
-# ECRP Calculator
+# ECRP Calculator Web App
 
-GitHub Pages-ready web app version of the ECRP spreadsheet calculator.
+This is a static GitHub Pages starter app converted from `ECRP Calculator.xlsx`.
 
-## Upload to GitHub Pages
+## How to use with GitHub Pages
 
-1. Upload these files to your repository.
-2. Go to **Settings → Pages**.
-3. Set source to **Deploy from branch**, branch **main**, folder **/root**.
-4. Open the GitHub Pages URL.
+1. Create a new GitHub repository, for example `ecrp-calculator`.
+2. Upload these files to the repository root:
+   - `index.html`
+   - `style.css`
+   - `app.js`
+   - `data.js`
+3. In GitHub, go to **Settings > Pages**.
+4. Under **Build and deployment**, choose:
+   - Source: **Deploy from a branch**
+   - Branch: **main**
+   - Folder: **/root**
+5. Save. GitHub will give you a live link like:
+   `https://YOURUSERNAME.github.io/ecrp-calculator/`
 
-## Set/Lab Calculator Notes
+## Updating prices or labs
 
-The Set/Lab calculator now matches the spreadsheet logic more closely:
+Edit `data.js` directly in GitHub. That file contains:
 
-- The **Open Labs** section controls which labs are currently open.
-- The active lab dropdown beside **Lab** is the C5-style selected lab you are cooking at.
-- Crack tables can only cook **Crack, Heroin, or XTC/Ecstasy**.
-- Coke tables can only cook **Cocaine, LSD, or Meth**.
-- Plant tables can only cook **Joint or Seeds**.
-- Table totals come from the selected active lab.
-- Total drugs, ingredients, cost, value, profit, weight, and per-hour totals update live.
+- Product price tiers
+- Default quantities
+- Bonus percentages
+- Labs and table counts
+- Set product costs and values
+- Cook times
 
-Prices, lab counts, and product data live in `data.js`. Recipes and table restrictions are in `app.js` near the top.
+## Notes
+
+This version runs entirely in the browser, so no server or database is required. User-entered values are saved locally in the browser using `localStorage`.

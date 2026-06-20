@@ -120,12 +120,21 @@ function calculateProducts() {
   document.getElementById('productBreakdown').innerHTML = '<table><thead><tr><th>Product</th><th>Total Value</th></tr></thead><tbody>' + DATA.products.map(p => `<tr><td>${p}</td><td>${money(byProduct[p])}</td></tr>`).join('') + '</tbody></table>';
 }
 
+function compactTime(seconds) {
+  seconds = Math.round(seconds || 0);
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  if (h && m) return `${h}h ${m}m`;
+  if (h) return `${h}h`;
+  return `${m}m`;
+}
+
 function buildOpenLabs() {
   const el = document.getElementById('openLabsList');
   el.innerHTML = state.openLabs.map((lab, idx) => `
     <div class="open-lab-row ${lab ? 'filled' : 'empty'}">
-      <select data-open-index="${idx}">${labOptions(lab, true)}</select>
       <div class="lab-letter">${LAB_LETTERS[idx]}</div>
+      <select data-open-index="${idx}">${labOptions(lab, true)}</select>
     </div>
   `).join('');
 
@@ -150,6 +159,13 @@ function buildActiveLabSelect() {
     save();
     buildSetCalculator();
   };
+
+  const lab = labByName(state.activeLab) || DATA.labs[0];
+  document.getElementById('activeLabStats').innerHTML = `
+    <div class="stat-pill"><span>Crack Tables</span><strong>${num(lab.crackTables)}</strong></div>
+    <div class="stat-pill"><span>Coke Tables</span><strong>${num(lab.cokeTables)}</strong></div>
+    <div class="stat-pill"><span>Plant Tables</span><strong>${num(lab.plantTables)}</strong></div>
+  `;
 }
 
 function buildFixedSetRows() {
@@ -161,28 +177,42 @@ function buildFixedSetRows() {
     const tableCount = num(lab[cfg.labField]);
     const product = SET_PRODUCTS[row.product];
     const fullTables = num(row.fullTables);
+    const batches = tableCount * fullTables;
     const rowTime = fullTables * product.timeSeconds;
-    const rowWeight = tableCount * fullTables * product.weight;
+    const rowWeight = batches * product.weight;
+    const disabled = tableCount <= 0;
     const options = cfg.allowedProducts.map(p => optionHtml(p, productLabel(p), row.product)).join('');
     return `
-      <div class="calc-row" data-row="${key}">
-        <div class="mini-cell table-name">${cfg.label}</div>
-        <div class="mini-cell readonly">${tableCount}</div>
-        <select data-field="product">${options}</select>
-        <input data-field="fullTables" type="number" min="0" step="1" value="${fullTables}">
-        <div class="mini-cell readonly">${formatTime(rowTime)}</div>
-        <div class="mini-cell readonly row-weight">${rowWeight ? rowWeight.toLocaleString(undefined, { maximumFractionDigits: 1 }) : ''}</div>
+      <div class="cook-card ${disabled ? 'disabled' : ''}" data-row="${key}">
+        <div class="cook-head">
+          <h4>${cfg.label} Tables</h4>
+          <span class="badge">${tableCount} available</span>
+        </div>
+        <div class="field">
+          <label>Cooking</label>
+          <select data-field="product">${options}</select>
+        </div>
+        <div class="field">
+          <label>Full Tables</label>
+          <input data-field="fullTables" type="number" min="0" step="1" value="${fullTables}">
+        </div>
+        <div class="cook-meta">
+          <div class="mini-stat"><span>Total drugs</span><strong>${batches.toLocaleString()}</strong></div>
+          <div class="mini-stat"><span>Weight</span><strong>${rowWeight.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></div>
+          <div class="mini-stat"><span>Time</span><strong>${compactTime(rowTime)}</strong></div>
+          <div class="mini-stat"><span>Allowed</span><strong>${cfg.allowedProducts.map(productLabel).join(', ')}</strong></div>
+        </div>
       </div>
     `;
   }).join('');
 
   el.querySelectorAll('select,input').forEach(input => input.addEventListener('input', e => {
-    const rowKey = e.target.closest('.calc-row').dataset.row;
+    const rowKey = e.target.closest('.cook-card').dataset.row;
     const field = e.target.dataset.field;
     state.setRows[rowKey][field] = field === 'fullTables' ? num(e.target.value) : e.target.value;
     save();
-    calculateSetTotals();
     buildFixedSetRows();
+    calculateSetTotals();
   }));
 }
 
@@ -214,22 +244,24 @@ function calculateSetTotals() {
   const profit = value - cost;
   const perHourMultiplier = maxTime ? 3600 / maxTime : 0;
 
-  document.querySelector('.top-calc-row .heading:last-child').innerHTML = `Total Weight<br><strong>${weight.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong>`;
+  document.getElementById('setTotalCost').textContent = money(cost);
+  document.getElementById('setTotalValue').textContent = money(value);
+  document.getElementById('setTotalProfit').textContent = money(profit);
+  document.getElementById('setTotalWeight').textContent = weight.toLocaleString(undefined, { maximumFractionDigits: 1 });
+  document.getElementById('setTotalTime').textContent = compactTime(maxTime);
 
-  document.getElementById('ingredientsTable').innerHTML = '<table class="sheet-table compact"><tbody>' + INGREDIENTS.map(i => `<tr><td>${i}</td><td>${ingredients[i].toLocaleString(undefined, { maximumFractionDigits: 0 })}</td></tr>`).join('') + '</tbody></table>';
+  document.getElementById('ingredientsTable').innerHTML = '<table><tbody>' + INGREDIENTS.map(i => `<tr><td>${i}</td><td>${ingredients[i].toLocaleString(undefined, { maximumFractionDigits: 0 })}</td></tr>`).join('') + '</tbody></table>';
 
   document.getElementById('totalDrugsTable').innerHTML = `
-    <table class="sheet-table compact total-drugs">
-      <thead><tr><th colspan="2">Total Drugs</th></tr></thead>
+    <table>
       <tbody>
-        ${totalDrugs.map(d => `<tr><td>${d.product}</td><td>${d.qty.toLocaleString()}</td></tr>`).join('')}
-        <tr class="total-line"><td></td><td>${totalDrugs.reduce((s, d) => s + d.qty, 0).toLocaleString()}</td></tr>
+        ${totalDrugs.map(d => `<tr><td>${d.product}</td><td>${d.qty.toLocaleString()}</td></tr>`).join('') || '<tr><td>No products</td><td>0</td></tr>'}
+        <tr class="total-line"><td>Total</td><td>${totalDrugs.reduce((s, d) => s + d.qty, 0).toLocaleString()}</td></tr>
       </tbody>
     </table>`;
 
   document.getElementById('perBatchTable').innerHTML = `
-    <table class="sheet-table compact money-table">
-      <thead><tr><th></th><th>Per Batch</th></tr></thead>
+    <table>
       <tbody>
         <tr><td>Cost</td><td>${money(cost)}</td></tr>
         <tr><td>Value</td><td>${money(value)}</td></tr>
@@ -238,8 +270,7 @@ function calculateSetTotals() {
     </table>`;
 
   document.getElementById('perHourTable').innerHTML = `
-    <table class="sheet-table compact money-table">
-      <thead><tr><th></th><th>Per Hour</th></tr></thead>
+    <table>
       <tbody>
         <tr><td>Cost</td><td>${money(cost * perHourMultiplier)}</td></tr>
         <tr><td>Value</td><td>${money(value * perHourMultiplier)}</td></tr>
