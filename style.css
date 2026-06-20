@@ -18,3 +18,79 @@ select option:hover {
   background-color: #2563eb;
   color: #ffffff;
 }
+
+
+/* Product calculator quantity totals */
+.quantity-breakdown-card {
+  margin-top: 18px;
+  background: #0b1224;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.breakdown-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 12px;
+}
+
+.breakdown-title-row h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #93c5fd;
+}
+
+.breakdown-title-row span {
+  color: #8ea0bf;
+  font-size: .85rem;
+}
+
+.quantity-breakdown-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(110px, 1fr));
+  gap: 10px;
+}
+
+.quantity-breakdown-item {
+  background: linear-gradient(180deg, #121c34, #0d1528);
+  border: 1px solid #2d3e5f;
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.quantity-breakdown-item span {
+  display: block;
+  color: #9fb0cd;
+  font-size: .85rem;
+  margin-bottom: 5px;
+}
+
+.quantity-breakdown-item strong {
+  display: block;
+  color: #ffffff;
+  font-size: 1.35rem;
+}
+
+@media(max-width: 1100px) {
+  .quantity-breakdown-grid {
+    grid-template-columns: repeat(3, minmax(110px, 1fr));
+  }
+}
+
+@media(max-width: 700px) {
+  .quantity-breakdown-grid {
+    grid-template-columns: repeat(2, minmax(110px, 1fr));
+  }
+
+  .breakdown-title-row {
+    display: block;
+  }
+
+  .breakdown-title-row span {
+    display: block;
+    margin-top: 4px;
+  }
+}

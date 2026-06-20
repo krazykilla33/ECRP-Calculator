@@ -120,6 +120,28 @@ function buildQuantityGrid() {
   }));
 }
 
+
+function buildQuantityBreakdown() {
+  const el = document.getElementById('quantityBreakdown');
+  if (!el) return;
+
+  const totals = {};
+  DATA.products.forEach(product => totals[product] = 0);
+
+  for (const tier of DATA.tiers) {
+    for (const product of DATA.products) {
+      totals[product] += num(state.quantities?.[tier.name]?.[product]);
+    }
+  }
+
+  el.innerHTML = DATA.products.map(product => `
+    <div class="quantity-breakdown-item">
+      <span>${productLabel(product)}</span>
+      <strong>${totals[product].toLocaleString()}</strong>
+    </div>
+  `).join('');
+}
+
 function calculateProducts() {
   document.getElementById('bonusEnabled').checked = !!state.bonusEnabled;
   let grand = 0, byProduct = {};
@@ -140,6 +162,7 @@ function calculateProducts() {
   document.getElementById('bonusTotal').textContent = money(bonusTotal);
   document.getElementById('totalWithBonus').textContent = money(grand + bonusTotal);
   document.getElementById('productBreakdown').innerHTML = '<table><thead><tr><th>Product</th><th>Total Value</th></tr></thead><tbody>' + DATA.products.map(p => `<tr><td>${p}</td><td>${money(byProduct[p])}</td></tr>`).join('') + '</tbody></table>';
+  buildQuantityBreakdown();
 }
 
 function compactTime(seconds) {
