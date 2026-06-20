@@ -60,35 +60,35 @@ window.ECRP_DATA = {
   ],
   "defaultQuantities": {
     "Low": {
-      "Blunt": 10.0,
-      "XTC": 27.0,
+      "Blunt": 0.0,
+      "XTC": 0.0,
       "Meth": 0.0,
       "Coke": 0.0,
-      "LSD": 40.0,
+      "LSD": 0.0,
       "Crack": 0.0,
       "Heroin": 0.0
     },
     "Medium": {
-      "Blunt": 85.0,
-      "XTC": 89.0,
+      "Blunt": 0.0,
+      "XTC": 0.0,
       "Meth": 0.0,
       "Coke": 0.0,
-      "LSD": 119.0,
+      "LSD": 0.0,
       "Crack": 0.0,
       "Heroin": 0.0
     },
     "High": {
-      "Blunt": 10.0,
-      "XTC": 34.0,
+      "Blunt": 0.0,
+      "XTC": 0.0,
       "Meth": 0.0,
       "Coke": 0.0,
-      "LSD": 79.0,
+      "LSD": 0.0,
       "Crack": 0.0,
       "Heroin": 0.0
     },
     "Top": {
       "Blunt": 0.0,
-      "XTC": 1.0,
+      "XTC": 0.0,
       "Meth": 0.0,
       "Coke": 0.0,
       "LSD": 0.0,
