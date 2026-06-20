@@ -83,7 +83,7 @@ function save() { localStorage.setItem(storeKey, JSON.stringify(state)); }
 function productPrice(tier, product) { return DATA.tiers.find(t => t.name === tier)?.prices?.[product] || 0; }
 function labByName(name) { return DATA.labs.find(l => l.name === name); }
 function openLabNames() { return state.openLabs.filter(Boolean); }
-function productLabel(product) { return product === 'XTC' ? 'XTC / Ecstasy' : product; }
+function productLabel(product) { return product === 'XTC' ? 'Ecstasy' : product; }
 function formatTime(seconds) {
   seconds = Math.round(seconds || 0);
   const h = Math.floor(seconds / 3600);
