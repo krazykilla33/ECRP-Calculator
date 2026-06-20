@@ -68,9 +68,9 @@ function defaultState() {
     openLabs: structuredClone(DEFAULT_OPEN_LABS),
     activeLab: 'Cement',
     setRows: {
-      crackTables: { product: 'Heroin', fullTables: 16 },
-      cokeTables: { product: 'LSD', fullTables: 27 },
-      plantTables: { product: 'Joint', fullTables: 50 }
+      crackTables: { product: 'Heroin', fullTables: 0 },
+      cokeTables: { product: 'LSD', fullTables: 0 },
+      plantTables: { product: 'Joint', fullTables: 0 }
     }
   };
 }
