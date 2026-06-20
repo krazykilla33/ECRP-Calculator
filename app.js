@@ -112,12 +112,23 @@ function buildQuantityGrid() {
   }
   html += '</tbody></table>';
   el.innerHTML = html;
-  el.querySelectorAll('input').forEach(i => i.addEventListener('input', e => {
+
+el.querySelectorAll('input').forEach(i => {
+  i.addEventListener('focus', e => {
+    e.target.select();
+  });
+
+  i.addEventListener('click', e => {
+    e.target.select();
+  });
+
+  i.addEventListener('input', e => {
     const { tier, product } = e.target.dataset;
     state.quantities[tier][product] = num(e.target.value);
     save();
     calculateProducts();
-  }));
+  });
+});
 }
 
 
