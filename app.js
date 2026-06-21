@@ -67,6 +67,7 @@ function defaultState() {
     bonusEnabled: DATA.bonus.enabledDefault,
     openLabs: structuredClone(DEFAULT_OPEN_LABS),
     activeLab: 'Cement',
+    lastUpdate: new Date().toISOString(),
     setRows: {
       crackTables: { product: 'Heroin', fullTables: 0 },
       cokeTables: { product: 'LSD', fullTables: 0 },
@@ -78,12 +79,34 @@ function defaultState() {
 let state = JSON.parse(localStorage.getItem(storeKey) || 'null') || defaultState();
 if (!state.openLabs) state.openLabs = structuredClone(DEFAULT_OPEN_LABS);
 if (!state.setRows || Array.isArray(state.setRows)) state.setRows = defaultState().setRows;
+if (!state.lastUpdate) state.lastUpdate = new Date().toISOString();
 
 function save() { localStorage.setItem(storeKey, JSON.stringify(state)); }
 function productPrice(tier, product) { return DATA.tiers.find(t => t.name === tier)?.prices?.[product] || 0; }
 function labByName(name) { return DATA.labs.find(l => l.name === name); }
 function openLabNames() { return state.openLabs.filter(Boolean); }
 function productLabel(product) { return product === 'XTC' ? 'Ecstasy' : product; }
+
+function formatLastUpdate(timestamp) {
+  if (!timestamp) return 'Not updated yet';
+
+  const date = new Date(timestamp);
+
+  return new Intl.DateTimeFormat(undefined, {
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+    timeZoneName: 'short'
+  }).format(date);
+}
+
+function touchLastUpdate() {
+  state.lastUpdate = new Date().toISOString();
+}
+
 function formatTime(seconds) {
   seconds = Math.round(seconds || 0);
   const h = Math.floor(seconds / 3600);
@@ -202,7 +225,13 @@ function buildOpenLabs() {
   el.querySelectorAll('select').forEach(sel => sel.addEventListener('change', e => {
     const idx = Number(e.target.dataset.openIndex);
     state.openLabs[idx] = e.target.value;
-    if (!openLabNames().includes(state.activeLab)) state.activeLab = openLabNames()[0] || DATA.labs[0].name;
+
+    touchLastUpdate();
+
+    if (!openLabNames().includes(state.activeLab)) {
+      state.activeLab = openLabNames()[0] || DATA.labs[0].name;
+    }
+
     save();
     buildSetCalculator();
   }));
@@ -341,7 +370,7 @@ function calculateSetTotals() {
 }
 
 function buildSetCalculator() {
-  document.getElementById('lastUpdate').textContent = '20-6-2026';
+  document.getElementById('lastUpdate').textContent = formatLastUpdate(state.lastUpdate);
   buildOpenLabs();
   buildActiveLabSelect();
   buildFixedSetRows();
