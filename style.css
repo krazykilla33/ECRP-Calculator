@@ -115,3 +115,34 @@ input[type=number] {
 .product-value-title {
   margin-bottom: 12px;
 }
+
+.product-title-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.product-title-row h2 {
+  justify-self: start;
+}
+
+.product-reset-btn {
+  justify-self: center;
+}
+
+.product-title-row .toggle {
+  justify-self: end;
+}
+
+@media(max-width: 700px) {
+  .product-title-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .product-title-row h2,
+  .product-reset-btn,
+  .product-title-row .toggle {
+    justify-self: start;
+  }
+}
