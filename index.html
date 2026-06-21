@@ -12,14 +12,20 @@
       <h1>ECRP Calculator</h1>
       <p>Product values, open labs, cooking plans, ingredients, profit, time, and weight.</p>
     </div>
-    <button id="resetBtn" class="secondary">Reset saved amount</button>
   </header>
 
   <main>
     <section class="card">
-      <div class="section-title">
+      <div class="section-title product-title-row">
         <h2>Product Value Calculator</h2>
-        <label class="toggle"><input id="bonusEnabled" type="checkbox" /> Enable bonus</label>
+
+        <button id="resetBtn" class="secondary product-reset-btn" type="button">
+          Reset saved amount
+        </button>
+
+        <label class="toggle">
+          <input id="bonusEnabled" type="checkbox" /> Enable bonus
+        </label>
       </div>
       <div id="quantityGrid" class="table-wrap"></div>
       <div class="summary-grid">
