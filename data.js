@@ -189,7 +189,7 @@ window.ECRP_DATA = {
     },
     {
       "name": "Island",
-      "cokeTables": 6.0,
+      "cokeTables": 8.0,
       "crackTables": 4.0,
       "plantTables": 5.0
     },
