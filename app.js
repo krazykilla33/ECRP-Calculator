@@ -96,7 +96,12 @@ function optionHtml(value, label, selected) {
 }
 function labOptions(selected, includeBlank = false) {
   const blank = includeBlank ? optionHtml('', '', selected) : '';
-  return blank + DATA.labs.map(l => optionHtml(l.name, l.name, selected)).join('');
+
+  const sortedLabs = [...DATA.labs].sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
+
+  return blank + sortedLabs.map(l => optionHtml(l.name, l.name, selected)).join('');
 }
 
 function buildQuantityGrid() {
