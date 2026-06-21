@@ -94,3 +94,15 @@ select option:hover {
     margin-top: 4px;
   }
 }
+
+/* Hide number input arrows/spinners */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
