@@ -128,7 +128,7 @@ function labOptions(selected, includeBlank = false) {
 }
 
 function buildQuantityGrid() {
-  const el = document.getElementById('quantityGrid');
+  const el = .getElementById('quantityGrid');
   let html = '<table><thead><tr><th>Tier</th>' + DATA.products.map(p => `<th>${p}</th>`).join('') + '<th>Tier Total</th></tr></thead><tbody>';
   for (const tier of DATA.tiers) {
     html += `<tr><th>${tier.name}</th>`;
@@ -161,7 +161,7 @@ el.querySelectorAll('input').forEach(i => {
 
 
 function buildQuantityBreakdown() {
-  const el = document.getElementById('quantityBreakdown');
+  const el = .getElementById('quantityBreakdown');
   if (!el) return;
 
   const totals = {};
@@ -200,8 +200,23 @@ function calculateProducts() {
   document.getElementById('grandTotal').textContent = money(grand);
   document.getElementById('bonusTotal').textContent = money(bonusTotal);
   document.getElementById('totalWithBonus').textContent = money(grand + bonusTotal);
-  document.getElementById('productBreakdown').innerHTML = '<table><thead><tr><th>Product</th><th>Total Value</th></tr></thead><tbody>' + DATA.products.map(p => `<tr><td>${p}</td><td>${money(byProduct[p])}</td></tr>`).join('') + '</tbody></table>';
-  buildQuantityBreakdown();
+  
+  document.getElementById('productBreakdown').innerHTML = `
+  <div class="breakdown-title-row product-value-title">
+    <h3>Detailed Value Breakdown</h3>
+    <span>Total value by product</span>
+  </div>
+  <div class="quantity-breakdown-grid">
+    ${DATA.products.map(product => `
+      <div class="quantity-breakdown-item">
+        <span>${productLabel(product)}</span>
+        <strong>${money(byProduct[product])}</strong>
+      </div>
+    `).join('')}
+  </div>
+`;
+
+buildQuantityBreakdown();
 }
 
 function compactTime(seconds) {
