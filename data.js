@@ -260,13 +260,13 @@ window.ECRP_DATA = {
       "plantTables": 1.0
     },
     {
-      "name": "Galilee",
+      "name": "Galilee (Right Lake)",
       "cokeTables": 0.0,
       "crackTables": 6.0,
       "plantTables": 1.0
     },
     {
-      "name": "Tug",
+      "name": "Tug Boat",
       "cokeTables": 3.0,
       "crackTables": 3.0,
       "plantTables": 3.0
@@ -320,7 +320,7 @@ window.ECRP_DATA = {
       "plantTables": 2.0
     },
     {
-      "name": "Observatory",
+      "name": "Observatory (Orange Ball)",
       "cokeTables": 8.0,
       "crackTables": 6.0,
       "plantTables": 1.0
