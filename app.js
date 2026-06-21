@@ -118,7 +118,7 @@ function optionHtml(value, label, selected) {
   return `<option value="${value}" ${value === selected ? 'selected' : ''}>${label ?? value}</option>`;
 }
 function labOptions(selected, includeBlank = false) {
-  const blank = includeBlank ? optionHtml('', '', selected) : '';
+  const blank = includeBlank ? optionHtml('', 'UNKNOWN', selected) : '';
 
   const sortedLabs = [...DATA.labs].sort((a, b) =>
     a.name.localeCompare(b.name)
