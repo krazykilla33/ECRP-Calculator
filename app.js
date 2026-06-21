@@ -36,7 +36,7 @@ const SET_PRODUCTS = {
 };
 
 const INGREDIENTS = ['Plant', 'Acid', 'Lime', 'Sodium', 'Muriatic', 'Toluene', 'Lysergic', 'Ammonia', 'Acetone', 'Lithium', 'Phosphorus', 'Pseudo'];
-const DEFAULT_OPEN_LABS = ['Island', 'Galilee', 'Quarry', 'Paleto Train', 'Cement', '', '', ''];
+const DEFAULT_OPEN_LABS = ['Island', 'Galilee (Right Lake)', 'Quarry', 'Paleto Train', 'Cement', '', '', ''];
 const LAB_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
 
@@ -128,7 +128,7 @@ function labOptions(selected, includeBlank = false) {
 }
 
 function buildQuantityGrid() {
-  const el = .getElementById('quantityGrid');
+  const el = document.getElementById('quantityGrid');
   let html = '<table><thead><tr><th>Tier</th>' + DATA.products.map(p => `<th>${p}</th>`).join('') + '<th>Tier Total</th></tr></thead><tbody>';
   for (const tier of DATA.tiers) {
     html += `<tr><th>${tier.name}</th>`;
@@ -161,7 +161,7 @@ el.querySelectorAll('input').forEach(i => {
 
 
 function buildQuantityBreakdown() {
-  const el = .getElementById('quantityBreakdown');
+  const el = document.getElementById('quantityBreakdown');
   if (!el) return;
 
   const totals = {};
