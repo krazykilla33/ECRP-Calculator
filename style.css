@@ -106,3 +106,12 @@ input[type=number] {
   appearance: textfield;
   -moz-appearance: textfield;
 }
+
+/* Product value breakdown spacing */
+#productBreakdown {
+  margin-top: 14px;
+}
+
+.product-value-title {
+  margin-bottom: 12px;
+}
