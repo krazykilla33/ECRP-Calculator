@@ -296,14 +296,30 @@ function buildFixedSetRows() {
     `;
   }).join('');
 
-  el.querySelectorAll('select,input').forEach(input => input.addEventListener('input', e => {
+  el.querySelectorAll('select,input').forEach(input => {
+  if (input.type === 'number') {
+    input.addEventListener('focus', e => {
+      e.target.select();
+    });
+
+    input.addEventListener('click', e => {
+      e.target.select();
+    });
+  }
+
+  input.addEventListener('input', e => {
     const rowKey = e.target.closest('.cook-card').dataset.row;
     const field = e.target.dataset.field;
-    state.setRows[rowKey][field] = field === 'fullTables' ? num(e.target.value) : e.target.value;
+
+    state.setRows[rowKey][field] = field === 'fullTables'
+      ? num(e.target.value)
+      : e.target.value;
+
     save();
     buildFixedSetRows();
     calculateSetTotals();
-  }));
+  });
+});
 }
 
 function calculateSetTotals() {
