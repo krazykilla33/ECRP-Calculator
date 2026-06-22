@@ -206,7 +206,7 @@ window.ECRP_DATA = {
       "plantTables": 0.0
     },
     {
-      "name": "Sandy",
+      "name": "Sandy (LSD)",
       "cokeTables": 8.0,
       "crackTables": 2.0,
       "plantTables": 1.0
@@ -272,7 +272,7 @@ window.ECRP_DATA = {
       "plantTables": 3.0
     },
     {
-      "name": "Cassisdy (Airplane crash)",
+      "name": "Cassidy (Airplane crash)",
       "cokeTables": 5.0,
       "crackTables": 1.0,
       "plantTables": 2.0
@@ -326,7 +326,7 @@ window.ECRP_DATA = {
       "plantTables": 1.0
     },
     {
-      "name": "Sinner St Train",
+      "name": "Mission Row Train",
       "cokeTables": 8.0,
       "crackTables": 8.0,
       "plantTables": 0.0
