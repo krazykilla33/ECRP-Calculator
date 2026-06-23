@@ -171,8 +171,8 @@ window.ECRP_DATA = {
     },
     {
       "name": "Garbage",
-      "cokeTables": 6.0,
-      "crackTables": 0.0,
+      "cokeTables": 8.0,
+      "crackTables": 8.0,
       "plantTables": 2.0
     },
     {
