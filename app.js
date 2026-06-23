@@ -363,6 +363,30 @@ function compactTime(seconds) {
   return `${m}m`;
 }
 
+function updateCookCardStats(rowKey) {
+  const cfg = TABLES[rowKey];
+  const lab = labByName(state.activeLab) || DATA.labs[0];
+  const row = state.setRows[rowKey];
+  const product = SET_PRODUCTS[row.product];
+
+  const tableCount = num(lab[cfg.labField]);
+  const fullTables = num(row.fullTables);
+  const batches = tableCount * fullTables;
+  const rowTime = fullTables * product.timeSeconds;
+  const rowWeight = batches * product.weight;
+
+  const card = document.querySelector(`.cook-card[data-row="${rowKey}"]`);
+  if (!card) return;
+
+  const drugsEl = card.querySelector('[data-mini="drugs"]');
+  const weightEl = card.querySelector('[data-mini="weight"]');
+  const timeEl = card.querySelector('[data-mini="time"]');
+
+  if (drugsEl) drugsEl.textContent = batches.toLocaleString();
+  if (weightEl) weightEl.textContent = rowWeight.toLocaleString(undefined, { maximumFractionDigits: 1 });
+  if (timeEl) timeEl.textContent = compactTime(rowTime);
+}
+
 function buildOpenLabs() {
   const el = document.getElementById('openLabsList');
   el.innerHTML = state.openLabs.map((lab, idx) => `
@@ -440,11 +464,11 @@ function buildFixedSetRows() {
           <input data-field="fullTables" type="number" min="0" step="1" value="${fullTables}">
         </div>
         <div class="cook-meta">
-          <div class="mini-stat"><span>Total drugs</span><strong>${batches.toLocaleString()}</strong></div>
-          <div class="mini-stat"><span>Weight</span><strong>${rowWeight.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></div>
-          <div class="mini-stat"><span>Time</span><strong>${compactTime(rowTime)}</strong></div>
+          <div class="mini-stat"><span>Total drugs</span><strong data-mini="drugs">${batches.toLocaleString()}</strong></div>
+          <div class="mini-stat"><span>Weight</span><strong data-mini="weight">${rowWeight.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></div>
+          <div class="mini-stat"><span>Time</span><strong data-mini="time">${compactTime(rowTime)}</strong></div>
           <div class="mini-stat"><span>Allowed</span><strong>${cfg.allowedProducts.map(productLabel).join(', ')}</strong></div>
-        </div>
+       </div>
       </div>
     `;
   }).join('');
@@ -466,12 +490,7 @@ function buildFixedSetRows() {
         state.setRows[rowKey][field] = num(e.target.value);
 
         save();
-        calculateSetTotals();
-      });
-
-      input.addEventListener('change', () => {
-        save();
-        buildFixedSetRows();
+        updateCookCardStats(rowKey);
         calculateSetTotals();
       });
     } else {
