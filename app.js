@@ -898,18 +898,6 @@ if (copyOpenLabsBtnEl) {
   copyOpenLabsBtnEl.addEventListener('click', copyOpenLabsToClipboard);
 }
 
-const drugScreenshotInputEl = document.getElementById('drugScreenshotInput');
-if (drugScreenshotInputEl) {
-  drugScreenshotInputEl.addEventListener('change', e => {
-    pendingOcrImageFile = e.target.files?.[0] || null;
-
-    const status = document.getElementById('ocrStatus');
-    if (status && pendingOcrImageFile) {
-      status.textContent = `Screenshot selected: ${pendingOcrImageFile.name}`;
-    }
-  });
-}
-
 const scanScreenshotBtnEl = document.getElementById('scanScreenshotBtn');
 if (scanScreenshotBtnEl) {
   scanScreenshotBtnEl.addEventListener('click', () => {
@@ -922,7 +910,12 @@ if (applyOcrBtnEl) {
   applyOcrBtnEl.addEventListener('click', applyOcrValuesToCalculator);
 }
 
-if (document.getElementById('drugScreenshotInput')) {
+const ocrPasteBoxEl = document.getElementById('ocrPasteBox');
+if (ocrPasteBoxEl) {
+  ocrPasteBoxEl.addEventListener('click', () => {
+    ocrPasteBoxEl.focus();
+  });
+
   document.addEventListener('paste', e => {
     const items = Array.from(e.clipboardData?.items || []);
     const imageItem = items.find(item => item.type.startsWith('image/'));
@@ -932,9 +925,17 @@ if (document.getElementById('drugScreenshotInput')) {
     pendingOcrImageFile = imageItem.getAsFile();
 
     const status = document.getElementById('ocrStatus');
+    const preview = document.getElementById('ocrPreview');
+
     if (status) {
       status.textContent = 'Screenshot pasted. Click Scan Screenshot.';
     }
+
+    if (preview) {
+      preview.textContent = '';
+    }
+
+    ocrPasteBoxEl.textContent = 'Screenshot pasted ✓';
   });
 }
 
