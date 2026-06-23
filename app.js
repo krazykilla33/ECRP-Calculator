@@ -178,22 +178,100 @@ function parseDrugScreenshotText(rawText) {
   const text = normalizeOcrText(rawText);
   const found = {};
 
-  for (const productText of Object.keys(OCR_PRODUCT_ALIASES)) {
-    const appProduct = OCR_PRODUCT_ALIASES[productText];
+  const tierOrder = ['Low', 'Medium', 'High', 'Top'];
 
-    for (const tier of OCR_TIERS) {
-      const pattern = new RegExp(
-        `${productText}\\s*\\(?\\s*${tier}\\s*\\)?[^0-9]{0,25}(\\d+)\\s*x`,
-        'gi'
-      );
+  const productPatterns = [
+    { regex: /mari(?:j|ju|jua|juana)?|marijuana|weed|blunt/gi, appProduct: 'Blunt' },
+    { regex: /lsd|1sd|l5d/gi, appProduct: 'LSD' },
+    { regex: /ecstasy|extasy|xtc|xte/gi, appProduct: 'XTC' },
+    { regex: /meth/gi, appProduct: 'Meth' },
+    { regex: /cocaine|coke/gi, appProduct: 'Coke' },
+    { regex: /crack/gi, appProduct: 'Crack' },
+    { regex: /heroin/gi, appProduct: 'Heroin' }
+  ];
 
-      let match;
-      while ((match = pattern.exec(text)) !== null) {
-        const qty = num(match[1]);
+  function detectTierHint(textBetweenProductAndQty) {
+    const hint = String(textBetweenProductAndQty || '').toLowerCase();
 
-        if (!found[tier]) found[tier] = {};
-        found[tier][appProduct] = qty;
+    // Full or partial tier words
+    if (/\blo(?:w)?\b/.test(hint) || /\(\s*l/.test(hint)) return 'Low';
+    if (/\bme(?:d|di|diu|dium)?\b/.test(hint) || /\(\s*m/.test(hint)) return 'Medium';
+    if (/\bhi(?:g|gh)?\b/.test(hint) || /\(\s*h/.test(hint)) return 'High';
+    if (/\bto(?:p)?\b/.test(hint) || /\(\s*t/.test(hint)) return 'Top';
+
+    // Single-letter fallback if OCR only catches L / M / H / T
+    if (/\b l \b/.test(` ${hint} `)) return 'Low';
+    if (/\b m \b/.test(` ${hint} `)) return 'Medium';
+    if (/\b h \b/.test(` ${hint} `)) return 'High';
+    if (/\b t \b/.test(` ${hint} `)) return 'Top';
+
+    return null;
+  }
+
+  const detectedItems = [];
+
+  for (const productPattern of productPatterns) {
+    const matches = [...text.matchAll(productPattern.regex)];
+
+    for (const match of matches) {
+      const productStart = match.index;
+      const productEnd = productStart + match[0].length;
+      const afterProduct = text.slice(productEnd, productEnd + 100);
+
+      const qtyMatch = afterProduct.match(/(\d{1,5})\s*x/i);
+      if (!qtyMatch) continue;
+
+      const qty = num(qtyMatch[1]);
+      const beforeQty = afterProduct.slice(0, qtyMatch.index);
+      const detectedTier = detectTierHint(beforeQty);
+
+      detectedItems.push({
+        index: productStart,
+        appProduct: productPattern.appProduct,
+        tier: detectedTier,
+        qty
+      });
+    }
+  }
+
+  const groupedByProduct = {};
+
+  for (const item of detectedItems) {
+    if (!groupedByProduct[item.appProduct]) groupedByProduct[item.appProduct] = [];
+    groupedByProduct[item.appProduct].push(item);
+  }
+
+  for (const [appProduct, items] of Object.entries(groupedByProduct)) {
+    items.sort((a, b) => a.index - b.index);
+
+    const usedTiers = new Set();
+
+    // First pass: keep any tier OCR could clearly read
+    for (const item of items) {
+      if (!item.tier) continue;
+
+      if (!found[item.tier]) found[item.tier] = {};
+      found[item.tier][appProduct] = item.qty;
+      usedTiers.add(item.tier);
+    }
+
+    // Second pass: infer missing/cut-off tiers by item order
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.tier) continue;
+
+      let inferredTier = tierOrder[i];
+
+      // If the position tier is already used, pick the first missing tier
+      if (usedTiers.has(inferredTier)) {
+        inferredTier = tierOrder.find(tier => !usedTiers.has(tier));
       }
+
+      if (!inferredTier) continue;
+
+      if (!found[inferredTier]) found[inferredTier] = {};
+      found[inferredTier][appProduct] = item.qty;
+      usedTiers.add(inferredTier);
     }
   }
 
@@ -238,6 +316,8 @@ async function scanDrugScreenshotFile(file) {
     if (preview) preview.textContent = '';
 
     const result = await window.Tesseract.recognize(file, 'eng');
+    console.log('OCR RAW TEXT:', result.data.text);
+
     const values = parseDrugScreenshotText(result.data.text);
 
     pendingOcrValues = values;
