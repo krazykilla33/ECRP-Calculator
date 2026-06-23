@@ -1,4 +1,27 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  onSnapshot,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
 const DATA = window.ECRP_DATA;
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB1z0raLG33koiCkqxVIYzmJs1UX9_1se4",
+    authDomain: "ecrp-calculator.firebaseapp.com",
+    projectId: "ecrp-calculator",
+    storageBucket: "ecrp-calculator.firebasestorage.app",
+    messagingSenderId: "661571891282",
+    appId: "1:661571891282:web:410cd9c70bf313e9d52f8b"
+  };
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
+const openLabsDocRef = doc(db, "shared", "openLabs");
 
 const money = n => new Intl.NumberFormat('en-US', {
   style: 'currency', currency: 'USD', maximumFractionDigits: 0
@@ -105,6 +128,81 @@ function formatLastUpdate(timestamp) {
 
 function touchLastUpdate() {
   state.lastUpdate = new Date().toISOString();
+}
+
+async function saveOpenLabsToFirebase() {
+  try {
+    await setDoc(openLabsDocRef, {
+      slots: state.openLabs,
+      activeLab: state.activeLab,
+      lastUpdate: state.lastUpdate,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (error) {
+    console.error("Failed to save Open Labs to Firebase:", error);
+  }
+}
+
+async function loadOpenLabsFromFirebaseOnce() {
+  try {
+    const snap = await getDoc(openLabsDocRef);
+
+    if (snap.exists()) {
+      const data = snap.data();
+
+      if (Array.isArray(data.slots)) {
+        state.openLabs = data.slots.slice(0, 8);
+
+        while (state.openLabs.length < 8) {
+          state.openLabs.push("");
+        }
+      }
+
+      if (data.activeLab) {
+        state.activeLab = data.activeLab;
+      }
+
+      if (data.lastUpdate) {
+        state.lastUpdate = data.lastUpdate;
+      }
+
+      save();
+      buildSetCalculator();
+    } else {
+      await saveOpenLabsToFirebase();
+    }
+  } catch (error) {
+    console.error("Failed to load Open Labs from Firebase:", error);
+  }
+}
+
+function watchOpenLabsFromFirebase() {
+  onSnapshot(openLabsDocRef, snapshot => {
+    if (!snapshot.exists()) return;
+
+    const data = snapshot.data();
+
+    if (Array.isArray(data.slots)) {
+      state.openLabs = data.slots.slice(0, 8);
+
+      while (state.openLabs.length < 8) {
+        state.openLabs.push("");
+      }
+    }
+
+    if (data.activeLab) {
+      state.activeLab = data.activeLab;
+    }
+
+    if (data.lastUpdate) {
+      state.lastUpdate = data.lastUpdate;
+    }
+
+    save();
+    buildSetCalculator();
+  }, error => {
+    console.error("Open Labs Firebase watch failed:", error);
+  });
 }
 
 function formatTime(seconds) {
@@ -249,6 +347,7 @@ function buildOpenLabs() {
 
     save();
     buildSetCalculator();
+    saveOpenLabsToFirebase();
   }));
 }
 
@@ -260,10 +359,12 @@ function buildActiveLabSelect() {
   select.innerHTML = source.map(name => optionHtml(name, name, state.activeLab)).join('');
   select.value = state.activeLab;
   select.onchange = e => {
-    state.activeLab = e.target.value;
-    save();
-    buildSetCalculator();
-  };
+  state.activeLab = e.target.value;
+
+  save();
+  buildSetCalculator();
+  saveOpenLabsToFirebase();
+};
 
   const lab = labByName(state.activeLab) || DATA.labs[0];
   document.getElementById('activeLabStats').innerHTML = `
@@ -426,3 +527,6 @@ document.getElementById('resetFullTablesBtn').addEventListener('click', resetFul
 buildQuantityGrid();
 buildSetCalculator();
 calculateProducts();
+
+loadOpenLabsFromFirebaseOnce();
+watchOpenLabsFromFirebase();
