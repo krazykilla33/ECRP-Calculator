@@ -37,13 +37,16 @@
           <span>Upload or paste inventory screenshot</span>
         </div>
 
+        <div id="ocrPasteBox" class="ocr-paste-box" tabindex="0">
+          Click here and press Ctrl+V to paste a Snipping Tool screenshot
+        </div>
+
         <div class="ocr-actions">
-          <input id="drugScreenshotInput" type="file" accept="image/*" />
           <button id="scanScreenshotBtn" class="secondary" type="button">Scan Screenshot</button>
           <button id="applyOcrBtn" class="secondary" type="button">Apply Found Values</button>
         </div>
 
-        <p id="ocrStatus" class="muted">Tip: You can also click this page and press Ctrl+V after copying a screenshot.</p>
+        <p id="ocrStatus" class="muted">No screenshot pasted yet.</p>
 
         <div id="ocrPreview" class="ocr-preview"></div>
       </div>
