@@ -183,46 +183,62 @@ function parseDrugScreenshotText(rawText) {
   const productPatterns = [
     { regex: /mar\w{0,12}|mari\w{0,12}|weed|blunt/gi, appProduct: 'Blunt' },
     { regex: /lsd|1sd|l5d/gi, appProduct: 'LSD' },
-    { regex: /ecstasy|extasy|xtc|xte/gi, appProduct: 'XTC' },
+    { regex: /ecstasy|extasy|frdacsv|fr<tacy|frtacy|xtc|xte/gi, appProduct: 'XTC' },
     { regex: /meth/gi, appProduct: 'Meth' },
     { regex: /cocaine|coke/gi, appProduct: 'Coke' },
     { regex: /crack/gi, appProduct: 'Crack' },
     { regex: /heroin/gi, appProduct: 'Heroin' }
   ];
 
-  function detectTierHint(textBetweenProductAndQty) {
-    const hint = String(textBetweenProductAndQty || '').toLowerCase();
+  function detectTierHint(hintText) {
+    const hint = String(hintText || '').toLowerCase();
 
-    // Full or partial tier words
-    if (/\blo(?:w)?\b/.test(hint) || /\(\s*l/.test(hint)) return 'Low';
+    if (/\blo(?:w)?\b/.test(hint) || /\(\s*l/.test(hint) || /\bion\b/.test(hint)) return 'Low';
     if (/\bme(?:d|di|diu|dium)?\b/.test(hint) || /\(\s*m/.test(hint)) return 'Medium';
-    if (/\bhi(?:g|gh)?\b/.test(hint) || /\(\s*h/.test(hint)) return 'High';
-    if (/\bto(?:p)?\b/.test(hint) || /\(\s*t/.test(hint)) return 'Top';
-
-    // Single-letter fallback if OCR only catches L / M / H / T
-    if (/\b l \b/.test(` ${hint} `)) return 'Low';
-    if (/\b m \b/.test(` ${hint} `)) return 'Medium';
-    if (/\b h \b/.test(` ${hint} `)) return 'High';
-    if (/\b t \b/.test(` ${hint} `)) return 'Top';
+    if (/\bhi(?:g|gh|ghy|gh\w*)?\b/.test(hint) || /\(\s*h/.test(hint) || /\bhaoh/.test(hint)) return 'High';
+    if (/\bto(?:p|n)?\b/.test(hint) || /\(\s*t/.test(hint) || /\bton\b/.test(hint)) return 'Top';
 
     return null;
+  }
+
+  function findNextProductIndex(text, startIndex) {
+    let nextIndex = -1;
+
+    for (const productPattern of productPatterns) {
+      const regex = new RegExp(productPattern.regex.source, 'gi');
+      regex.lastIndex = startIndex;
+
+      const match = regex.exec(text);
+      if (!match) continue;
+
+      if (nextIndex === -1 || match.index < nextIndex) {
+        nextIndex = match.index;
+      }
+    }
+
+    return nextIndex;
   }
 
   const detectedItems = [];
 
   for (const productPattern of productPatterns) {
-    const matches = [...text.matchAll(productPattern.regex)];
+    const regex = new RegExp(productPattern.regex.source, 'gi');
+    let match;
 
-    for (const match of matches) {
+    while ((match = regex.exec(text)) !== null) {
       const productStart = match.index;
       const productEnd = productStart + match[0].length;
-      const afterProduct = text.slice(productEnd, productEnd + 100);
 
-      const qtyMatch = afterProduct.match(/(\d{1,5})\s*x/i);
+      const nextProductIndex = findNextProductIndex(text, productEnd);
+      const end = nextProductIndex === -1 ? productEnd + 80 : nextProductIndex;
+
+      const chunk = text.slice(productEnd, end);
+
+      const qtyMatch = chunk.match(/(\d{1,5})\s*x/i);
       if (!qtyMatch) continue;
 
       const qty = num(qtyMatch[1]);
-      const beforeQty = afterProduct.slice(0, qtyMatch.index);
+      const beforeQty = chunk.slice(0, qtyMatch.index);
       const detectedTier = detectTierHint(beforeQty);
 
       detectedItems.push({
@@ -246,7 +262,6 @@ function parseDrugScreenshotText(rawText) {
 
     const usedTiers = new Set();
 
-    // First pass: keep any tier OCR could clearly read
     for (const item of items) {
       if (!item.tier) continue;
 
@@ -255,14 +270,12 @@ function parseDrugScreenshotText(rawText) {
       usedTiers.add(item.tier);
     }
 
-    // Second pass: infer missing/cut-off tiers by item order
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       if (item.tier) continue;
 
       let inferredTier = tierOrder[i];
 
-      // If the position tier is already used, pick the first missing tier
       if (usedTiers.has(inferredTier)) {
         inferredTier = tierOrder.find(tier => !usedTiers.has(tier));
       }
