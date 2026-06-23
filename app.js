@@ -305,13 +305,14 @@ function prepareImageForOcr(file) {
     img.onload = () => {
       URL.revokeObjectURL(url);
 
-      const scale = 3;
+      const scale = 4;
       const canvas = document.createElement('canvas');
       canvas.width = img.width * scale;
       canvas.height = img.height * scale;
 
       const ctx = canvas.getContext('2d');
-      ctx.imageSmoothingEnabled = false;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -319,7 +320,10 @@ function prepareImageForOcr(file) {
 
       for (let i = 0; i < data.length; i += 4) {
         const gray = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
-        const boosted = gray > 115 ? 255 : 0;
+
+        // Softer contrast boost instead of harsh black/white threshold
+        let boosted = (gray - 80) * 2.2 + 80;
+        boosted = Math.max(0, Math.min(255, boosted));
 
         data[i] = boosted;
         data[i + 1] = boosted;
@@ -369,7 +373,8 @@ async function scanDrugScreenshotFile(file) {
 
     const result = await window.Tesseract.recognize(preparedImage, 'eng', {
       tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789() .x',
-      preserve_interword_spaces: '1'
+      preserve_interword_spaces: '1',
+      tessedit_pageseg_mode: '6'
     });
 
     console.log('OCR RAW TEXT:', result.data.text);
