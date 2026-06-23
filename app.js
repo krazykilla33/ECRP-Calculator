@@ -415,11 +415,9 @@ document.getElementById('bonusEnabled').addEventListener('change', e => {
 });
 
 document.getElementById('resetBtn').addEventListener('click', () => {
-  state = defaultState();
   state.quantities = zeroQuantities();
   save();
   buildQuantityGrid();
-  buildSetCalculator();
   calculateProducts();
 });
 
