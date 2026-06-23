@@ -147,6 +147,140 @@ async function copyOpenLabsToClipboard() {
 
 function productLabel(product) { return product === 'XTC' ? 'Ecstasy' : product; }
 
+let pendingOcrValues = null;
+let pendingOcrImageFile = null;
+
+const OCR_PRODUCT_ALIASES = {
+  Marijuana: 'Blunt',
+  Weed: 'Blunt',
+  Blunt: 'Blunt',
+  LSD: 'LSD',
+  Ecstasy: 'XTC',
+  XTC: 'XTC',
+  Meth: 'Meth',
+  Cocaine: 'Coke',
+  Coke: 'Coke',
+  Crack: 'Crack',
+  Heroin: 'Heroin'
+};
+
+const OCR_TIERS = ['Low', 'Medium', 'High', 'Top'];
+
+function normalizeOcrText(text) {
+  return String(text || '')
+    .replace(/[“”]/g, '"')
+    .replace(/[‘’]/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function parseDrugScreenshotText(rawText) {
+  const text = normalizeOcrText(rawText);
+  const found = {};
+
+  for (const productText of Object.keys(OCR_PRODUCT_ALIASES)) {
+    const appProduct = OCR_PRODUCT_ALIASES[productText];
+
+    for (const tier of OCR_TIERS) {
+      const pattern = new RegExp(
+        `${productText}\\s*\\(?\\s*${tier}\\s*\\)?[^0-9]{0,25}(\\d+)\\s*x`,
+        'gi'
+      );
+
+      let match;
+      while ((match = pattern.exec(text)) !== null) {
+        const qty = num(match[1]);
+
+        if (!found[tier]) found[tier] = {};
+        found[tier][appProduct] = qty;
+      }
+    }
+  }
+
+  return found;
+}
+
+function ocrValuesToPreview(values) {
+  if (!values || !Object.keys(values).length) {
+    return 'No matching drug values found yet.';
+  }
+
+  const lines = [];
+
+  for (const tier of DATA.tiers.map(t => t.name)) {
+    if (!values[tier]) continue;
+
+    for (const product of DATA.products) {
+      if (values[tier][product] === undefined) continue;
+      lines.push(`${productLabel(product)} ${tier}: ${values[tier][product]}`);
+    }
+  }
+
+  return lines.length ? lines.join('\n') : 'No matching drug values found yet.';
+}
+
+async function scanDrugScreenshotFile(file) {
+  const status = document.getElementById('ocrStatus');
+  const preview = document.getElementById('ocrPreview');
+
+  if (!file) {
+    if (status) status.textContent = 'Choose or paste a screenshot first.';
+    return;
+  }
+
+  if (!window.Tesseract) {
+    if (status) status.textContent = 'OCR library did not load. Refresh the page and try again.';
+    return;
+  }
+
+  try {
+    if (status) status.textContent = 'Scanning screenshot... this may take a few seconds.';
+    if (preview) preview.textContent = '';
+
+    const result = await window.Tesseract.recognize(file, 'eng');
+    const values = parseDrugScreenshotText(result.data.text);
+
+    pendingOcrValues = values;
+
+    if (preview) {
+      preview.textContent = ocrValuesToPreview(values);
+    }
+
+    if (status) {
+      status.textContent = 'Scan complete. Review the values, then click Apply Found Values.';
+    }
+  } catch (error) {
+    console.error('OCR scan failed:', error);
+    if (status) status.textContent = 'Scan failed. Try a clearer screenshot.';
+  }
+}
+
+function applyOcrValuesToCalculator() {
+  const status = document.getElementById('ocrStatus');
+
+  if (!pendingOcrValues || !Object.keys(pendingOcrValues).length) {
+    if (status) status.textContent = 'No OCR values to apply yet.';
+    return;
+  }
+
+  for (const tier of DATA.tiers.map(t => t.name)) {
+    if (!pendingOcrValues[tier]) continue;
+
+    for (const product of DATA.products) {
+      if (pendingOcrValues[tier][product] === undefined) continue;
+
+      if (!state.quantities[tier]) state.quantities[tier] = {};
+      state.quantities[tier][product] = pendingOcrValues[tier][product];
+    }
+  }
+
+  save();
+  buildQuantityGrid();
+  calculateProducts();
+
+  if (status) status.textContent = 'Values applied to calculator.';
+}
+
 function formatLastUpdate(timestamp) {
   if (!timestamp) return 'Not updated yet';
 
@@ -606,6 +740,46 @@ if (resetFullTablesBtnEl) {
 const copyOpenLabsBtnEl = document.getElementById('copyOpenLabsBtn');
 if (copyOpenLabsBtnEl) {
   copyOpenLabsBtnEl.addEventListener('click', copyOpenLabsToClipboard);
+}
+
+const drugScreenshotInputEl = document.getElementById('drugScreenshotInput');
+if (drugScreenshotInputEl) {
+  drugScreenshotInputEl.addEventListener('change', e => {
+    pendingOcrImageFile = e.target.files?.[0] || null;
+
+    const status = document.getElementById('ocrStatus');
+    if (status && pendingOcrImageFile) {
+      status.textContent = `Screenshot selected: ${pendingOcrImageFile.name}`;
+    }
+  });
+}
+
+const scanScreenshotBtnEl = document.getElementById('scanScreenshotBtn');
+if (scanScreenshotBtnEl) {
+  scanScreenshotBtnEl.addEventListener('click', () => {
+    scanDrugScreenshotFile(pendingOcrImageFile);
+  });
+}
+
+const applyOcrBtnEl = document.getElementById('applyOcrBtn');
+if (applyOcrBtnEl) {
+  applyOcrBtnEl.addEventListener('click', applyOcrValuesToCalculator);
+}
+
+if (document.getElementById('drugScreenshotInput')) {
+  document.addEventListener('paste', e => {
+    const items = Array.from(e.clipboardData?.items || []);
+    const imageItem = items.find(item => item.type.startsWith('image/'));
+
+    if (!imageItem) return;
+
+    pendingOcrImageFile = imageItem.getAsFile();
+
+    const status = document.getElementById('ocrStatus');
+    if (status) {
+      status.textContent = 'Screenshot pasted. Click Scan Screenshot.';
+    }
+  });
 }
 
 if (document.getElementById('quantityGrid')) {
