@@ -31,6 +31,22 @@
           <input id="bonusEnabled" type="checkbox" /> Enable bonus
         </label>
       </div>
+      <div class="ocr-card">
+        <div class="breakdown-title-row">
+          <h3>Screenshot Auto Fill</h3>
+          <span>Upload or paste inventory screenshot</span>
+        </div>
+
+        <div class="ocr-actions">
+          <input id="drugScreenshotInput" type="file" accept="image/*" />
+          <button id="scanScreenshotBtn" class="secondary" type="button">Scan Screenshot</button>
+          <button id="applyOcrBtn" class="secondary" type="button">Apply Found Values</button>
+        </div>
+
+        <p id="ocrStatus" class="muted">Tip: You can also click this page and press Ctrl+V after copying a screenshot.</p>
+
+        <div id="ocrPreview" class="ocr-preview"></div>
+      </div>
       <div id="quantityGrid" class="table-wrap"></div>
       <div class="summary-grid">
         <div class="summary"><span>Grand Total</span><strong id="grandTotal">$0</strong></div>
@@ -50,6 +66,7 @@
   </main>
 
   <script src="data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script type="module" src="app.js"></script>
 </body>
 </html>
