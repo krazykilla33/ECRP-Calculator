@@ -8,54 +8,53 @@
 </head>
 <body>
   <header class="hero">
-  <div>
-    <h1>ECRP Drug Calculator</h1>
-    <p>Product values, bonuses, and quantity breakdowns.</p>
-  </div>
+    <div>
+      <h1>ECRP Drug Calculator</h1>
+      <p>Product values, bonuses, and quantity breakdowns.</p>
+    </div>
 
-  <nav class="page-nav">
-    <a class="secondary nav-btn" href="index.html">Lab Tracker</a>
-  </nav>
-</header>
+    <nav class="page-nav">
+      <a class="secondary nav-btn" href="index.html">Lab Tracker</a>
+    </nav>
+  </header>
 
   <main>
     <section class="card">
       <div class="section-title product-title-row">
         <h2>Product Value Calculator</h2>
 
-        <button id="resetBtn" class="secondary product-reset-btn" type="button">
-          Reset Calculator
-        </button>
+        <div class="product-tools-row">
+          <div id="ocrPasteBox" class="ocr-paste-box compact-paste-box" tabindex="0">
+            Paste Screenshot
+          </div>
+
+          <button id="scanScreenshotBtn" class="secondary small-button" type="button">Scan</button>
+          <button id="applyOcrBtn" class="secondary small-button" type="button">Apply</button>
+
+          <button id="resetBtn" class="secondary small-button product-reset-btn" type="button">
+            Reset Calculator
+          </button>
+        </div>
 
         <label class="toggle">
           <input id="bonusEnabled" type="checkbox" /> Enable bonus
         </label>
       </div>
-      <div class="ocr-card">
-        <div class="breakdown-title-row">
-          <h3>Screenshot Auto Fill</h3>
-          <span>Upload or paste inventory screenshot</span>
-        </div>
 
-        <div id="ocrPasteBox" class="ocr-paste-box" tabindex="0">
-          Click here and press Ctrl+V to paste a Snipping Tool screenshot
-        </div>
-
-        <div class="ocr-actions">
-          <button id="scanScreenshotBtn" class="secondary" type="button">Scan Screenshot</button>
-          <button id="applyOcrBtn" class="secondary" type="button">Apply Found Values</button>
-        </div>
-
-        <p id="ocrStatus" class="muted">No screenshot pasted yet.</p>
-
-        <div id="ocrPreview" class="ocr-preview"></div>
+      <div class="ocr-inline-status-row">
+        <span id="ocrStatus" class="ocr-status-text">No screenshot</span>
       </div>
+
+      <div id="ocrPreview" class="ocr-preview hidden"></div>
+
       <div id="quantityGrid" class="table-wrap"></div>
+
       <div class="summary-grid">
         <div class="summary"><span>Grand Total</span><strong id="grandTotal">$0</strong></div>
         <div class="summary"><span>Total With Bonus</span><strong id="totalWithBonus">$0</strong></div>
         <div class="summary"><span>Bonus Total</span><strong id="bonusTotal">$0</strong></div>
       </div>
+
       <div class="quantity-breakdown-card">
         <div class="breakdown-title-row">
           <h3>Detailed Quantity Breakdown</h3>
@@ -63,9 +62,9 @@
         </div>
         <div id="quantityBreakdown" class="quantity-breakdown-grid"></div>
       </div>
+
       <div id="productBreakdown" class="quantity-breakdown-card"></div>
     </section>
-
   </main>
 
   <script src="data.js"></script>
