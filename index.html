@@ -53,14 +53,20 @@
         <div class="last-update-pill">Last update: <span id="lastUpdate"></span></div>
       </div>
 
-      <div class="lab-app-layout">
-        <aside class="open-labs-card">
-          <div class="panel-head">
-            <h3>Open Labs</h3>
-            <span>Slots A-H</span>
-          </div>
-          <div id="openLabsList" class="open-labs-list"></div>
-        </aside>
+<div class="lab-app-layout">
+  <aside class="open-labs-card">
+    <div class="panel-head">
+      <h3>Open Labs</h3>
+      <span>Slots A-H</span>
+    </div>
+
+    <div id="openLabsList" class="open-labs-list"></div>
+
+    <div class="open-labs-copy-row">
+      <button id="copyOpenLabsBtn" class="secondary" type="button">Copy Open Labs</button>
+      <span id="copyOpenLabsStatus" class="copy-status"></span>
+    </div>
+  </aside>
 
         <div class="lab-workspace">
           <div class="active-lab-card">
