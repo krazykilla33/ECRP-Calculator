@@ -181,7 +181,7 @@ function parseDrugScreenshotText(rawText) {
   const tierOrder = ['Low', 'Medium', 'High', 'Top'];
 
   const productPatterns = [
-    { regex: /mari(?:j|ju|jua|juana)?|marijuana|weed|blunt/gi, appProduct: 'Blunt' },
+    { regex: /mar\w{0,12}|mari\w{0,12}|weed|blunt/gi, appProduct: 'Blunt' },
     { regex: /lsd|1sd|l5d/gi, appProduct: 'LSD' },
     { regex: /ecstasy|extasy|xtc|xte/gi, appProduct: 'XTC' },
     { regex: /meth/gi, appProduct: 'Meth' },
@@ -297,6 +297,56 @@ function ocrValuesToPreview(values) {
   return lines.length ? lines.join('\n') : 'No matching drug values found yet.';
 }
 
+function prepareImageForOcr(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+
+      const scale = 3;
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+
+      const ctx = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const gray = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
+        const boosted = gray > 115 ? 255 : 0;
+
+        data[i] = boosted;
+        data[i + 1] = boosted;
+        data[i + 2] = boosted;
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+
+      canvas.toBlob(blob => {
+        if (!blob) {
+          reject(new Error('Could not prepare image for OCR.'));
+          return;
+        }
+
+        resolve(blob);
+      }, 'image/png');
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('Could not load image.'));
+    };
+
+    img.src = url;
+  });
+}
+
 async function scanDrugScreenshotFile(file) {
   const status = document.getElementById('ocrStatus');
   const preview = document.getElementById('ocrPreview');
@@ -315,7 +365,13 @@ async function scanDrugScreenshotFile(file) {
     if (status) status.textContent = 'Scanning screenshot... this may take a few seconds.';
     if (preview) preview.textContent = '';
 
-    const result = await window.Tesseract.recognize(file, 'eng');
+    const preparedImage = await prepareImageForOcr(file);
+
+    const result = await window.Tesseract.recognize(preparedImage, 'eng', {
+      tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789() .x',
+      preserve_interword_spaces: '1'
+    });
+
     console.log('OCR RAW TEXT:', result.data.text);
 
     const values = parseDrugScreenshotText(result.data.text);
