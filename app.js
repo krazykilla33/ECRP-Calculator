@@ -468,6 +468,12 @@ function buildFixedSetRows() {
         save();
         calculateSetTotals();
       });
+
+      input.addEventListener('change', () => {
+        save();
+        buildFixedSetRows();
+        calculateSetTotals();
+      });
     } else {
       input.addEventListener('change', e => {
         const rowKey = e.target.closest('.cook-card').dataset.row;
