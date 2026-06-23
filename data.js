@@ -342,6 +342,12 @@ window.ECRP_DATA = {
       "cokeTables": 5.0,
       "crackTables": 8.0,
       "plantTables": 1.0
+    },
+    {
+      "name": "Juans",
+      "cokeTables": 8.0,
+      "crackTables": 8.0,
+      "plantTables": 3.0
     }
   ],
   "setProducts": [
