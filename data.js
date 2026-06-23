@@ -213,8 +213,8 @@ window.ECRP_DATA = {
     },
     {
       "name": "Sea Labs",
-      "cokeTables": 6.0,
-      "crackTables": 2.0,
+      "cokeTables": 8.0,
+      "crackTables": 4.0,
       "plantTables": 3.0
     },
     {
