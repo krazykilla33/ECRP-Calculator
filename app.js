@@ -116,7 +116,7 @@ function openLabsCopyText() {
     return 'Open Labs: None';
   }
 
-  return `Open Labs: ${labs.join(' | ')}`;
+  return `Open Labs: ${labs.join(', ')}`;
 }
 
 async function copyOpenLabsToClipboard() {
