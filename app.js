@@ -579,25 +579,42 @@ function buildSetCalculator() {
   calculateSetTotals();
 }
 
-document.getElementById('bonusEnabled').addEventListener('change', e => {
-  state.bonusEnabled = e.target.checked;
-  save();
-  calculateProducts();
-});
+const bonusEnabledEl = document.getElementById('bonusEnabled');
+if (bonusEnabledEl) {
+  bonusEnabledEl.addEventListener('change', e => {
+    state.bonusEnabled = e.target.checked;
+    save();
+    calculateProducts();
+  });
+}
 
-document.getElementById('resetBtn').addEventListener('click', () => {
-  state.quantities = zeroQuantities();
-  save();
+const resetBtnEl = document.getElementById('resetBtn');
+if (resetBtnEl) {
+  resetBtnEl.addEventListener('click', () => {
+    state.quantities = zeroQuantities();
+    save();
+    buildQuantityGrid();
+    calculateProducts();
+  });
+}
+
+const resetFullTablesBtnEl = document.getElementById('resetFullTablesBtn');
+if (resetFullTablesBtnEl) {
+  resetFullTablesBtnEl.addEventListener('click', resetFullTablesToZero);
+}
+
+const copyOpenLabsBtnEl = document.getElementById('copyOpenLabsBtn');
+if (copyOpenLabsBtnEl) {
+  copyOpenLabsBtnEl.addEventListener('click', copyOpenLabsToClipboard);
+}
+
+if (document.getElementById('quantityGrid')) {
   buildQuantityGrid();
   calculateProducts();
-});
+}
 
-document.getElementById('resetFullTablesBtn').addEventListener('click', resetFullTablesToZero);
-document.getElementById('copyOpenLabsBtn').addEventListener('click', copyOpenLabsToClipboard);
-
-buildQuantityGrid();
-buildSetCalculator();
-calculateProducts();
-
-loadOpenLabsFromFirebaseOnce();
-watchOpenLabsFromFirebase();
+if (document.getElementById('setCalculator')) {
+  buildSetCalculator();
+  loadOpenLabsFromFirebaseOnce();
+  watchOpenLabsFromFirebase();
+}
