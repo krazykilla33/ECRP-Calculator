@@ -297,12 +297,14 @@ function ocrValuesToPreview(values) {
   }
 
   const lines = [];
+  const productOrder = ['Blunt', 'LSD', 'XTC', 'Meth', 'Coke', 'Crack', 'Heroin'];
+  const tierOrder = ['Low', 'Medium', 'High', 'Top'];
 
-  for (const tier of DATA.tiers.map(t => t.name)) {
-    if (!values[tier]) continue;
-
-    for (const product of DATA.products) {
+  for (const product of productOrder) {
+    for (const tier of tierOrder) {
+      if (!values[tier]) continue;
       if (values[tier][product] === undefined) continue;
+
       lines.push(`${productLabel(product)} ${tier}: ${values[tier][product]}`);
     }
   }
