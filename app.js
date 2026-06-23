@@ -36,7 +36,7 @@ const SET_PRODUCTS = {
 };
 
 const INGREDIENTS = ['Plant', 'Acid', 'Lime', 'Sodium', 'Muriatic', 'Toluene', 'Lysergic', 'Ammonia', 'Acetone', 'Lithium', 'Phosphorus', 'Pseudo'];
-const DEFAULT_OPEN_LABS = ['Island', 'Galilee (Right Lake)', 'Quarry', 'Paleto Train', 'Cement', '', '', ''];
+const DEFAULT_OPEN_LABS = DATA.openLabs || ['', '', '', '', '', '', '', ''];
 const LAB_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
 
