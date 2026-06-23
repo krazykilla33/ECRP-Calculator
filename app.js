@@ -108,6 +108,43 @@ function save() { localStorage.setItem(storeKey, JSON.stringify(state)); }
 function productPrice(tier, product) { return DATA.tiers.find(t => t.name === tier)?.prices?.[product] || 0; }
 function labByName(name) { return DATA.labs.find(l => l.name === name); }
 function openLabNames() { return state.openLabs.filter(Boolean); }
+
+function openLabsCopyText() {
+  const labs = openLabNames();
+
+  if (!labs.length) {
+    return 'Open Labs: None';
+  }
+
+  return `Open Labs: ${labs.join(' | ')}`;
+}
+
+async function copyOpenLabsToClipboard() {
+  const text = openLabsCopyText();
+  const status = document.getElementById('copyOpenLabsStatus');
+
+  try {
+    await navigator.clipboard.writeText(text);
+
+    if (status) {
+      status.textContent = 'Copied!';
+      setTimeout(() => status.textContent = '', 2000);
+    }
+  } catch (error) {
+    const temp = document.createElement('textarea');
+    temp.value = text;
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand('copy');
+    document.body.removeChild(temp);
+
+    if (status) {
+      status.textContent = 'Copied!';
+      setTimeout(() => status.textContent = '', 2000);
+    }
+  }
+}
+
 function productLabel(product) { return product === 'XTC' ? 'Ecstasy' : product; }
 
 function formatLastUpdate(timestamp) {
@@ -531,6 +568,7 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 });
 
 document.getElementById('resetFullTablesBtn').addEventListener('click', resetFullTablesToZero);
+document.getElementById('copyOpenLabsBtn').addEventListener('click', copyOpenLabsToClipboard);
 
 buildQuantityGrid();
 buildSetCalculator();
