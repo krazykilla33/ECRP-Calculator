@@ -224,12 +224,33 @@ input[type=number] {
 
 /* Screenshot OCR Auto Fill */
 .ocr-card {
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 12px;
+  margin-bottom: 14px;
   background: #0b1224;
   border: 1px solid var(--line);
   border-radius: 16px;
-  padding: 16px;
+  padding: 14px;
+}
+
+.ocr-card .breakdown-title-row {
+  margin-bottom: 10px;
+}
+
+.ocr-paste-box {
+  border: 1px dashed #36517d;
+  background: #081020;
+  color: #bfdbfe;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+}
+
+.ocr-paste-box:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px #38bdf833;
 }
 
 .ocr-actions {
@@ -239,20 +260,18 @@ input[type=number] {
   align-items: center;
 }
 
-.ocr-actions input[type="file"] {
-  max-width: 320px;
-}
-
 .ocr-preview {
-  margin-top: 12px;
+  margin-top: 10px;
   background: #081020;
   border: 1px solid #263756;
   border-radius: 12px;
-  padding: 12px;
+  padding: 10px 12px;
   color: #dbeafe;
   font-size: 0.95rem;
   white-space: pre-wrap;
-  min-height: 42px;
+  min-height: 36px;
+  max-height: 170px;
+  overflow: auto;
 }
 
 @media(max-width: 700px) {
@@ -261,9 +280,7 @@ input[type=number] {
     grid-template-columns: 1fr;
   }
 
-  .ocr-actions input[type="file"],
   .ocr-actions button {
     width: 100%;
-    max-width: none;
   }
 }
