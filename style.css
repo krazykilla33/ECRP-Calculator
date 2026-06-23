@@ -177,3 +177,22 @@ input[type=number] {
     font-size: .82rem;
   }
 }
+
+/* Copy Open Labs button */
+.open-labs-copy-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.open-labs-copy-row button {
+  width: 100%;
+}
+
+.copy-status {
+  color: #22c55e;
+  font-weight: 700;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
