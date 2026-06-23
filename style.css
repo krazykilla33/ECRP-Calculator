@@ -221,3 +221,49 @@ input[type=number] {
     width: 100%;
   }
 }
+
+/* Screenshot OCR Auto Fill */
+.ocr-card {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  background: #0b1224;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.ocr-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.ocr-actions input[type="file"] {
+  max-width: 320px;
+}
+
+.ocr-preview {
+  margin-top: 12px;
+  background: #081020;
+  border: 1px solid #263756;
+  border-radius: 12px;
+  padding: 12px;
+  color: #dbeafe;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+  min-height: 42px;
+}
+
+@media(max-width: 700px) {
+  .ocr-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .ocr-actions input[type="file"],
+  .ocr-actions button {
+    width: 100%;
+    max-width: none;
+  }
+}
