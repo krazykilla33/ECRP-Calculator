@@ -1,1 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ECRP Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <h1>ECRP Drug Calculator / Lab Tracker</h1>
+      <p>Product values, open labs, cooking plans, ingredients, profit, time, and weight.</p>
+    </div>
+  </header>
 
+  <main>
+    <section class="card">
+      <div class="section-title product-title-row">
+        <h2>Product Value Calculator</h2>
+
+        <button id="resetBtn" class="secondary product-reset-btn" type="button">
+          Reset Calculator
+        </button>
+
+        <label class="toggle">
+          <input id="bonusEnabled" type="checkbox" /> Enable bonus
+        </label>
+      </div>
+      <div id="quantityGrid" class="table-wrap"></div>
+      <div class="summary-grid">
+        <div class="summary"><span>Grand Total</span><strong id="grandTotal">$0</strong></div>
+        <div class="summary"><span>Total With Bonus</span><strong id="totalWithBonus">$0</strong></div>
+        <div class="summary"><span>Bonus Total</span><strong id="bonusTotal">$0</strong></div>
+      </div>
+      <div class="quantity-breakdown-card">
+        <div class="breakdown-title-row">
+          <h3>Detailed Quantity Breakdown</h3>
+          <span>Total quantity by product</span>
+        </div>
+        <div id="quantityBreakdown" class="quantity-breakdown-grid"></div>
+      </div>
+      <div id="productBreakdown" class="quantity-breakdown-card"></div>
+    </section>
+
+  </main>
+
+  <script src="data.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
