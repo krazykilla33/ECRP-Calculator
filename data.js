@@ -134,7 +134,7 @@ window.ECRP_DATA = {
       "plantTables": 0.0
     },
     {
-      "name": "Scrapyard",
+      "name": "city Scrapyard",
       "cokeTables": 5.0,
       "crackTables": 3.0,
       "plantTables": 3.0
@@ -152,7 +152,7 @@ window.ECRP_DATA = {
       "plantTables": 3.0
     },
     {
-      "name": "Docks (Drift)",
+      "name": "Merryweather",
       "cokeTables": 5.0,
       "crackTables": 5.0,
       "plantTables": 6.0
@@ -194,7 +194,7 @@ window.ECRP_DATA = {
       "plantTables": 5.0
     },
     {
-      "name": "Senora Warehouses",
+      "name": "LFB (Senora Warehouses)",
       "cokeTables": 4.0,
       "crackTables": 8.0,
       "plantTables": 2.0
@@ -242,7 +242,7 @@ window.ECRP_DATA = {
       "plantTables": 1.0
     },
     {
-      "name": "Pirate Bay",
+      "name": "Pirate Bay (cove)",
       "cokeTables": 8.0,
       "crackTables": 5.0,
       "plantTables": 2.0
@@ -284,13 +284,13 @@ window.ECRP_DATA = {
       "plantTables": 3.0
     },
     {
-      "name": "Sandy Village (Afghan)",
+      "name": "Afghan",
       "cokeTables": 8.0,
       "crackTables": 8.0,
       "plantTables": 2.0
     },
     {
-      "name": "Train Tracks",
+      "name": "NOOSE",
       "cokeTables": 5.0,
       "crackTables": 3.0,
       "plantTables": 2.0
@@ -320,7 +320,7 @@ window.ECRP_DATA = {
       "plantTables": 2.0
     },
     {
-      "name": "Observatory (Orange Ball)",
+      "name": "Orange Ball (Observatory)",
       "cokeTables": 8.0,
       "crackTables": 6.0,
       "plantTables": 1.0
