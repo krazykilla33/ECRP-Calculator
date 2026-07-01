@@ -122,7 +122,7 @@ window.ECRP_DATA = {
       "plantTables": 0.0
     },
     {
-      "name": "Vespucci (Flower)",
+      "name": "Flower (Vespucci)",
       "cokeTables": 4.0,
       "crackTables": 4.0,
       "plantTables": 2.0
@@ -230,7 +230,7 @@ window.ECRP_DATA = {
       "plantTables": 1.0
     },
     {
-      "name": "Dignity",
+      "name": "North Lab (Dignity)",
       "cokeTables": 6.0,
       "crackTables": 6.0,
       "plantTables": 3.0
