@@ -49,21 +49,41 @@
 
       <div id="quantityGrid" class="table-wrap"></div>
 
-      <div class="summary-grid">
-        <div class="summary"><span>Grand Total</span><strong id="grandTotal">$0</strong></div>
-        <div class="summary"><span>Total With Bonus</span><strong id="totalWithBonus">$0</strong></div>
-        <div class="summary"><span>Bonus Total</span><strong id="bonusTotal">$0</strong></div>
-      </div>
+      <div class="product-dashboard">
+        <div class="dashboard-card totals-card">
+          <div class="dashboard-card-title">
+            <h3>Totals</h3>
+          </div>
 
-      <div class="quantity-breakdown-card">
-        <div class="breakdown-title-row">
-          <h3>Detailed Quantity Breakdown</h3>
-          <span>Total quantity by product</span>
+          <div class="summary-grid dashboard-summary-grid">
+            <div class="summary">
+              <span>Grand Total</span>
+              <strong id="grandTotal">$0</strong>
+            </div>
+
+            <div class="summary">
+              <span>Total With Bonus</span>
+              <strong id="totalWithBonus">$0</strong>
+            </div>
+
+            <div class="summary">
+              <span>Bonus Total</span>
+              <strong id="bonusTotal">$0</strong>
+            </div>
+          </div>
         </div>
-        <div id="quantityBreakdown" class="quantity-breakdown-grid"></div>
-      </div>
 
-      <div id="productBreakdown" class="quantity-breakdown-card"></div>
+        <div class="dashboard-card quantity-dashboard-card">
+          <div class="breakdown-title-row">
+            <h3>Detailed Quantity Breakdown</h3>
+            <span>Total quantity by product</span>
+          </div>
+
+          <div id="quantityBreakdown" class="quantity-breakdown-grid dashboard-breakdown-grid"></div>
+        </div>
+
+        <div id="productBreakdown" class="dashboard-card value-dashboard-card"></div>
+      </div>
     </section>
   </main>
 
