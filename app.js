@@ -972,7 +972,24 @@ function calculateSetTotals() {
   document.getElementById('setTotalWeight').textContent = weight.toLocaleString(undefined, { maximumFractionDigits: 1 });
   document.getElementById('setTotalTime').textContent = compactTime(maxTime);
 
-  document.getElementById('ingredientsTable').innerHTML = '<table><tbody>' + INGREDIENTS.map(i => `<tr><td>${i}</td><td>${ingredients[i].toLocaleString(undefined, { maximumFractionDigits: 0 })}</td></tr>`).join('') + '</tbody></table>';
+  const usedIngredients = INGREDIENTS.filter(i => num(ingredients[i]) > 0);
+
+  document.getElementById('ingredientsTable').innerHTML = `
+    <table>
+      <tbody>
+        ${
+          usedIngredients.length
+            ? usedIngredients.map(i => `
+                <tr>
+                  <td>${i}</td>
+                  <td>${ingredients[i].toLocaleString(undefined, { maximumFractionDigits: 0 })}</td>
+                </tr>
+              `).join('')
+            : '<tr><td>No ingredients required</td><td>0</td></tr>'
+        }
+      </tbody>
+    </table>
+  `;
 
   document.getElementById('totalDrugsTable').innerHTML = `
     <table>
