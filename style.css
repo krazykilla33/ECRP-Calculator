@@ -432,3 +432,46 @@ input[type=number] {
     grid-template-columns: 1fr;
   }
 }
+
+/* Collapsible price list panel */
+.price-list-panel {
+  margin-top: 12px;
+  background: #0b1224;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.price-list-table {
+  overflow-x: auto;
+}
+
+.price-list-table table {
+  min-width: 720px;
+}
+
+.price-list-table th,
+.price-list-table td {
+  text-align: center;
+}
+
+.price-list-table th:first-child,
+.price-list-table td:first-child {
+  text-align: left;
+}
+
+.price-list-table tbody th {
+  color: #38bdf8;
+  background: transparent;
+  position: static;
+}
+
+.price-list-table td {
+  color: #eaf2ff;
+  font-weight: 700;
+}
+
+.price-list-table tr:hover th,
+.price-list-table tr:hover td {
+  background: #111b33;
+}
