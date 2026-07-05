@@ -108,7 +108,7 @@ input[type=number] {
 
 /* Product value breakdown spacing */
 #productBreakdown {
-  margin-top: 14px;
+  margin-top: 0;
 }
 
 .product-value-title {
