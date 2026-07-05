@@ -24,6 +24,10 @@
         <h2>Product Value Calculator</h2>
 
         <div class="product-tools-row">
+          <button id="togglePriceListBtn" class="secondary small-button" type="button">
+            Price List
+          </button>
+          
           <div id="ocrPasteBox" class="ocr-paste-box compact-paste-box" tabindex="0">
             Paste Screenshot
           </div>
@@ -46,6 +50,15 @@
       </div>
 
       <div id="ocrPreview" class="ocr-preview hidden"></div>
+
+      <div id="priceListPanel" class="price-list-panel hidden">
+        <div class="breakdown-title-row">
+          <h3>Price List</h3>
+          <span>Values used by the calculator</span>
+        </div>
+
+        <div id="priceListTable" class="price-list-table"></div>
+      </div>
 
       <div id="quantityGrid" class="table-wrap"></div>
 
