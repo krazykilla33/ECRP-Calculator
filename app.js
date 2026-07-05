@@ -567,6 +567,49 @@ function labOptions(selected, includeBlank = false) {
   return blank + sortedLabs.map(l => optionHtml(l.name, l.name, selected)).join('');
 }
 
+function buildPriceListTable() {
+  const el = document.getElementById('priceListTable');
+  if (!el) return;
+
+  let html = `
+    <table>
+      <thead>
+        <tr>
+          <th>Tier</th>
+          ${DATA.products.map(product => `
+            <th>
+              <span class="product-table-head">
+                <span>${productIcon(product)}</span>
+                <span>${productLabel(product)}</span>
+              </span>
+            </th>
+          `).join('')}
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  for (const tier of DATA.tiers) {
+    html += `
+      <tr>
+        <th>${tier.name}</th>
+        ${DATA.products.map(product => `
+          <td>${Number(tier.prices?.[product] || 0).toLocaleString(undefined, {
+            maximumFractionDigits: 2
+          })}</td>
+        `).join('')}
+      </tr>
+    `;
+  }
+
+  html += `
+      </tbody>
+    </table>
+  `;
+
+  el.innerHTML = html;
+}
+
 function buildQuantityGrid() {
   const el = document.getElementById('quantityGrid');
   if (!el) return;
@@ -1007,6 +1050,23 @@ if (applyOcrBtnEl) {
   applyOcrBtnEl.addEventListener('click', applyOcrValuesToCalculator);
 }
 
+const togglePriceListBtnEl = document.getElementById('togglePriceListBtn');
+if (togglePriceListBtnEl) {
+  togglePriceListBtnEl.addEventListener('click', () => {
+    const panel = document.getElementById('priceListPanel');
+    if (!panel) return;
+
+    panel.classList.toggle('hidden');
+
+    if (!panel.classList.contains('hidden')) {
+      buildPriceListTable();
+      togglePriceListBtnEl.textContent = 'Hide Prices';
+    } else {
+      togglePriceListBtnEl.textContent = 'Price List';
+    }
+  });
+}
+
 const ocrPasteBoxEl = document.getElementById('ocrPasteBox');
 if (ocrPasteBoxEl) {
   ocrPasteBoxEl.addEventListener('click', () => {
@@ -1038,6 +1098,7 @@ if (ocrPasteBoxEl) {
 }
 
 if (document.getElementById('quantityGrid')) {
+  buildPriceListTable();
   buildQuantityGrid();
   calculateProducts();
 }
