@@ -62,7 +62,6 @@ const INGREDIENTS = ['Plant', 'Acid', 'Lime', 'Sodium', 'Muriatic', 'Toluene', '
 const DEFAULT_OPEN_LABS = DATA.openLabs || ['', '', '', '', '', '', '', ''];
 const LAB_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-
 function zeroQuantities() {
   const quantities = {};
   for (const tier of DATA.tiers) {
@@ -146,6 +145,20 @@ async function copyOpenLabsToClipboard() {
 }
 
 function productLabel(product) { return product === 'XTC' ? 'Ecstasy' : product; }
+
+function productIcon(product) {
+  const icons = {
+    Blunt: '🌿',
+    XTC: '💊',
+    Meth: '⚗️',
+    Coke: '☁️',
+    LSD: '🎇',
+    Crack: '🪨',
+    Heroin: '💉'
+  };
+
+  return icons[product] || '•';
+}
 
 let pendingOcrValues = null;
 let pendingOcrImageFile = null;
@@ -336,7 +349,6 @@ function prepareImageForOcr(file) {
       for (let i = 0; i < data.length; i += 4) {
         const gray = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
 
-        // Softer contrast boost instead of harsh black/white threshold
         let boosted = (gray - 80) * 2.2 + 80;
         boosted = Math.max(0, Math.min(255, boosted));
 
@@ -400,6 +412,7 @@ async function scanDrugScreenshotFile(file) {
 
     if (preview) {
       preview.textContent = ocrValuesToPreview(values);
+      preview.classList.remove('hidden');
     }
 
     if (status) {
@@ -539,9 +552,11 @@ function formatTime(seconds) {
   const s = seconds % 60;
   return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
+
 function optionHtml(value, label, selected) {
   return `<option value="${value}" ${value === selected ? 'selected' : ''}>${label ?? value}</option>`;
 }
+
 function labOptions(selected, includeBlank = false) {
   const blank = includeBlank ? optionHtml('', 'UNKNOWN', selected) : '';
 
@@ -554,36 +569,74 @@ function labOptions(selected, includeBlank = false) {
 
 function buildQuantityGrid() {
   const el = document.getElementById('quantityGrid');
-  let html = '<table><thead><tr><th>Tier</th>' + DATA.products.map(p => `<th>${p}</th>`).join('') + '<th>Tier Total</th></tr></thead><tbody>';
+  if (!el) return;
+
+  let html = `
+    <table>
+      <thead>
+        <tr>
+          <th>Tier</th>
+          ${DATA.products.map(product => `
+            <th>
+              <span class="product-table-head">
+                <span>${productIcon(product)}</span>
+                <span>${productLabel(product)}</span>
+              </span>
+            </th>
+          `).join('')}
+          <th>Tier Total</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
   for (const tier of DATA.tiers) {
     html += `<tr><th>${tier.name}</th>`;
-    for (const p of DATA.products) {
-      const v = state.quantities?.[tier.name]?.[p] ?? 0;
-      html += `<td><input type="number" min="0" step="1" value="${v}" data-tier="${tier.name}" data-product="${p}"></td>`;
+
+    for (const product of DATA.products) {
+      const value = state.quantities?.[tier.name]?.[product] ?? 0;
+
+      html += `
+        <td>
+          <input
+            type="number"
+            min="0"
+            step="1"
+            value="${value}"
+            data-tier="${tier.name}"
+            data-product="${product}"
+          >
+        </td>
+      `;
     }
+
     html += `<td id="tier-${tier.name}">$0</td></tr>`;
   }
-  html += '</tbody></table>';
+
+  html += `
+      </tbody>
+    </table>
+  `;
+
   el.innerHTML = html;
 
-el.querySelectorAll('input').forEach(i => {
-  i.addEventListener('focus', e => {
-    e.target.select();
-  });
+  el.querySelectorAll('input').forEach(input => {
+    input.addEventListener('focus', e => {
+      e.target.select();
+    });
 
-  i.addEventListener('click', e => {
-    e.target.select();
-  });
+    input.addEventListener('click', e => {
+      e.target.select();
+    });
 
-  i.addEventListener('input', e => {
-    const { tier, product } = e.target.dataset;
-    state.quantities[tier][product] = num(e.target.value);
-    save();
-    calculateProducts();
+    input.addEventListener('input', e => {
+      const { tier, product } = e.target.dataset;
+      state.quantities[tier][product] = num(e.target.value);
+      save();
+      calculateProducts();
+    });
   });
-});
 }
-
 
 function buildQuantityBreakdown() {
   const el = document.getElementById('quantityBreakdown');
@@ -599,49 +652,93 @@ function buildQuantityBreakdown() {
   }
 
   el.innerHTML = DATA.products.map(product => `
-    <div class="quantity-breakdown-item">
-      <span>${productLabel(product)}</span>
+    <div class="quantity-breakdown-item dashboard-product-card">
+      <span>
+        <span class="product-icon">${productIcon(product)}</span>
+        ${productLabel(product)}
+      </span>
       <strong>${totals[product].toLocaleString()}</strong>
     </div>
   `).join('');
 }
 
 function calculateProducts() {
-  document.getElementById('bonusEnabled').checked = !!state.bonusEnabled;
-  let grand = 0, byProduct = {};
-  DATA.products.forEach(p => byProduct[p] = 0);
+  const bonusEnabledEl = document.getElementById('bonusEnabled');
+  if (bonusEnabledEl) {
+    bonusEnabledEl.checked = !!state.bonusEnabled;
+  }
+
+  let grand = 0;
+  const byProduct = {};
+
+  DATA.products.forEach(product => {
+    byProduct[product] = 0;
+  });
+
   for (const tier of DATA.tiers) {
     let tierTotal = 0;
-    for (const p of DATA.products) {
-      const total = num(state.quantities[tier.name]?.[p]) * productPrice(tier.name, p);
+
+    for (const product of DATA.products) {
+      const total = num(state.quantities[tier.name]?.[product]) * productPrice(tier.name, product);
       tierTotal += total;
-      byProduct[p] += total;
+      byProduct[product] += total;
     }
+
     const cell = document.getElementById(`tier-${tier.name}`);
     if (cell) cell.textContent = money(tierTotal);
+
     grand += tierTotal;
   }
-  const bonusTotal = state.bonusEnabled ? ['Meth', 'Heroin', 'Crack'].reduce((sum, p) => sum + (byProduct[p] || 0) * (DATA.bonus[p] || 0), 0) : 0;
-  document.getElementById('grandTotal').textContent = money(grand);
-  document.getElementById('bonusTotal').textContent = money(bonusTotal);
-  document.getElementById('totalWithBonus').textContent = money(grand + bonusTotal);
-  
-  document.getElementById('productBreakdown').innerHTML = `
-  <div class="breakdown-title-row product-value-title">
-    <h3>Detailed Value Breakdown</h3>
-    <span>Total value by product</span>
-  </div>
-  <div class="quantity-breakdown-grid">
-    ${DATA.products.map(product => `
-      <div class="quantity-breakdown-item">
-        <span>${productLabel(product)}</span>
-        <strong>${money(byProduct[product])}</strong>
-      </div>
-    `).join('')}
-  </div>
-`;
 
-buildQuantityBreakdown();
+  const bonusTotal = state.bonusEnabled
+    ? ['Meth', 'Heroin', 'Crack'].reduce((sum, product) => {
+        return sum + (byProduct[product] || 0) * (DATA.bonus[product] || 0);
+      }, 0)
+    : 0;
+
+  const grandTotalEl = document.getElementById('grandTotal');
+  const bonusTotalEl = document.getElementById('bonusTotal');
+  const totalWithBonusEl = document.getElementById('totalWithBonus');
+
+  if (grandTotalEl) grandTotalEl.textContent = money(grand);
+  if (bonusTotalEl) bonusTotalEl.textContent = money(bonusTotal);
+  if (totalWithBonusEl) totalWithBonusEl.textContent = money(grand + bonusTotal);
+
+  const maxProductValue = Math.max(...Object.values(byProduct), 1);
+
+  const productBreakdownEl = document.getElementById('productBreakdown');
+  if (productBreakdownEl) {
+    productBreakdownEl.innerHTML = `
+      <div class="breakdown-title-row product-value-title">
+        <h3>Product Value Breakdown</h3>
+        <span>Total value by product</span>
+      </div>
+
+      <div class="quantity-breakdown-grid dashboard-breakdown-grid value-breakdown-grid">
+        ${DATA.products.map(product => {
+          const value = byProduct[product] || 0;
+          const percent = Math.round((value / maxProductValue) * 100);
+
+          return `
+            <div class="quantity-breakdown-item dashboard-product-card value-product-card">
+              <span>
+                <span class="product-icon">${productIcon(product)}</span>
+                ${productLabel(product)}
+              </span>
+
+              <strong>${money(value)}</strong>
+
+              <div class="value-bar-track">
+                <div class="value-bar-fill" style="width:${percent}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
+
+  buildQuantityBreakdown();
 }
 
 function compactTime(seconds) {
@@ -933,9 +1030,10 @@ if (ocrPasteBoxEl) {
 
     if (preview) {
       preview.textContent = '';
+      preview.classList.add('hidden');
     }
 
-    ocrPasteBoxEl.textContent = 'Screenshot pasted ✓';
+    ocrPasteBoxEl.textContent = 'Pasted ✓';
   });
 }
 
