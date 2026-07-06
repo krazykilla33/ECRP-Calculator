@@ -10,6 +10,7 @@ Edit `data.js` directly in GitHub. That file contains:
 - Default quantities
 - Bonus percentages
 - Labs and table counts
+- open/close lab map with markers
 - Set product costs and values
 - Cook times
 - last update date/time in your own timezone
