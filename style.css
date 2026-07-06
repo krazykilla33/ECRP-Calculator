@@ -756,10 +756,6 @@ th {
   width: 100%;
 }
 
-.apply-btn {
-  grid-column: 1 / 2;
-}
-
 .ocr-inline-status-row {
   margin-top: 12px;
 }
@@ -1004,10 +1000,6 @@ main {
     grid-template-columns: 1fr;
     max-width: none;
     width: 100%;
-  }
-
-  .apply-btn {
-    grid-column: auto;
   }
 
   .drug-header-nav .nav-btn,
