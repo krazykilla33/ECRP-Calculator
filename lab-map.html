@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ECRP Lab Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="lab-map.css" />
+</head>
+<body>
+  <div class="map-page">
+    <div id="labMap"></div>
+
+    <aside class="map-sidebar">
+      <div class="sidebar-title">LAB MAP</div>
+
+      <input id="labSearch" class="lab-search" placeholder="Search labs..." />
+
+      <div class="map-actions">
+        <button id="showAllBtn" type="button">All</button>
+        <button id="showOpenBtn" type="button">Open</button>
+        <button id="showClosedBtn" type="button">Closed</button>
+      </div>
+
+      <div id="selectedLabBox" class="selected-lab-box">
+        Select a lab to view it on the map.
+      </div>
+
+      <div id="labList"></div>
+    </aside>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="data.js"></script>
+  <script type="module" src="lab-map.js"></script>
+</body>
+</html>

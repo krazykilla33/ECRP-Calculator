@@ -106,6 +106,18 @@ if (!state.lastUpdate) state.lastUpdate = new Date().toISOString();
 function save() { localStorage.setItem(storeKey, JSON.stringify(state)); }
 function productPrice(tier, product) { return DATA.tiers.find(t => t.name === tier)?.prices?.[product] || 0; }
 function labByName(name) { return DATA.labs.find(l => l.name === name); }
+
+function labMapUrlByName(name) {
+  const lab = labByName(name);
+  if (!lab || !lab.id || !lab.map || lab.map.x === null || lab.map.y === null) return '';
+  return `lab-map.html?lab=${encodeURIComponent(lab.id)}`;
+}
+
+function labMapButtonHtml(name, label = 'Map') {
+  const url = labMapUrlByName(name);
+  if (!url) return `<span class="map-lab-btn disabled">No Map</span>`;
+  return `<a class="map-lab-btn" href="${url}">${label}</a>`;
+}
 function openLabNames() { return state.openLabs.filter(Boolean); }
 
 function openLabsCopyText() {
@@ -823,6 +835,7 @@ function buildOpenLabs() {
     <div class="open-lab-row ${lab ? 'filled' : 'empty'}">
       <div class="lab-letter">${LAB_LETTERS[idx]}</div>
       <select data-open-index="${idx}">${labOptions(lab, true)}</select>
+      ${lab ? labMapButtonHtml(lab, 'Map') : '<span class="map-lab-btn disabled">Map</span>'}
     </div>
   `).join('');
 
@@ -862,6 +875,7 @@ function buildActiveLabSelect() {
     <div class="stat-pill"><span>Crack Tables</span><strong>${num(lab.crackTables)}</strong></div>
     <div class="stat-pill"><span>Coke Tables</span><strong>${num(lab.cokeTables)}</strong></div>
     <div class="stat-pill"><span>Plant Tables</span><strong>${num(lab.plantTables)}</strong></div>
+    <div class="stat-pill map-stat-pill"><span>Location</span><strong>${labMapButtonHtml(lab.name, 'Show Map')}</strong></div>
   `;
 }
 

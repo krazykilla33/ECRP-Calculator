@@ -1,0 +1,236 @@
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: #0f1117;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+.map-page {
+  display: grid;
+  grid-template-columns: 1fr 430px;
+  width: 100vw;
+  height: 100vh;
+  background: #0f1117;
+}
+
+#labMap {
+  width: 100%;
+  height: 100%;
+  background: #0b1020;
+}
+
+.map-sidebar {
+  background: #161a22;
+  border-left: 1px solid #2b303b;
+  padding: 14px;
+  overflow-y: auto;
+}
+
+.sidebar-title {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  color: #f1f5f9;
+}
+
+.lab-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  margin-bottom: 12px;
+  background: #1d222c;
+  border: 1px solid #303746;
+  border-radius: 5px;
+  color: #fff;
+  outline: none;
+}
+
+.map-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.map-actions button {
+  background: #212735;
+  color: #fff;
+  border: 1px solid #343d50;
+  border-radius: 6px;
+  padding: 9px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.map-actions button:hover {
+  background: #2d3547;
+}
+
+.selected-lab-box {
+  background: #101722;
+  border: 1px solid #2f3a4b;
+  border-radius: 8px;
+  padding: 10px;
+  color: #94a3b8;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.lab-item {
+  padding: 13px 10px;
+  border-bottom: 1px solid #252b36;
+  cursor: pointer;
+}
+
+.lab-item:hover {
+  background: #1e2531;
+}
+
+.lab-item.active {
+  background: #263247;
+  border-left: 4px solid #38bdf8;
+}
+
+.lab-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.lab-meta {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.marker-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 0 0 3px rgba(56, 189, 248, 0.22),
+    0 0 12px rgba(56, 189, 248, 0.9),
+    0 3px 8px rgba(0, 0, 0, 0.8);
+}
+
+.marker-open {
+  background: radial-gradient(circle at 35% 35%, #ffffff, #22c55e 35%, #166534 100%);
+  box-shadow:
+    0 0 0 3px rgba(34, 197, 94, 0.22),
+    0 0 12px rgba(34, 197, 94, 0.9),
+    0 3px 8px rgba(0, 0, 0, 0.8);
+}
+
+.marker-closed {
+  background: radial-gradient(circle at 35% 35%, #ffffff, #ef4444 35%, #7f1d1d 100%);
+  box-shadow:
+    0 0 0 3px rgba(239, 68, 68, 0.22),
+    0 0 12px rgba(239, 68, 68, 0.9),
+    0 3px 8px rgba(0, 0, 0, 0.8);
+}
+
+.leaflet-popup-content-wrapper {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+}
+
+.leaflet-popup-tip {
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.lab-popup {
+  min-width: 155px;
+  padding: 10px 12px;
+  color: #f8fafc;
+  border-radius: 10px;
+  background:
+    linear-gradient(rgba(15, 23, 42, 0.91), rgba(15, 23, 42, 0.91)),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.08) 0px,
+      rgba(255, 255, 255, 0.08) 2px,
+      transparent 2px,
+      transparent 6px
+    );
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.65),
+    inset 0 0 18px rgba(56, 189, 248, 0.08);
+  font-size: 13px;
+}
+
+.lab-popup-title {
+  font-size: 14px;
+  font-weight: 900;
+  margin-bottom: 7px;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+}
+
+.lab-popup-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  line-height: 1.4;
+  color: #cbd5e1;
+}
+
+.lab-popup-row strong {
+  color: #ffffff;
+}
+
+.lab-popup-status {
+  margin-top: 8px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+}
+
+.popup-open {
+  background: rgba(34, 197, 94, 0.18);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.45);
+}
+
+.popup-closed {
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.45);
+}
+
+.status-open {
+  color: #22c55e;
+  font-weight: 800;
+}
+
+.status-closed {
+  color: #ef4444;
+  font-weight: 800;
+}
+
+@media(max-width: 800px) {
+  .map-page {
+    grid-template-columns: 1fr;
+    grid-template-rows: 62vh 38vh;
+  }
+
+  .map-sidebar {
+    border-left: 0;
+    border-top: 1px solid #2b303b;
+  }
+}
