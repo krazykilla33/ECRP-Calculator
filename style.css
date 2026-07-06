@@ -585,3 +585,65 @@ input[type=number] {
     grid-template-columns: 1fr;
   }
 }
+
+/* Compact lab calculator header */
+.hero {
+  display: none;
+}
+
+.lab-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+}
+
+.lab-title-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.compact-page-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.compact-page-nav .nav-btn {
+  padding: 9px 13px;
+  border-radius: 11px;
+  font-size: 0.9rem;
+}
+
+.last-update-pill {
+  white-space: nowrap;
+}
+
+.app-lab-card {
+  margin-top: 0;
+}
+
+/* Mobile stacking */
+@media(max-width: 850px) {
+  .lab-title-row {
+    align-items: flex-start;
+  }
+
+  .lab-title-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .compact-page-nav {
+    width: 100%;
+  }
+
+  .compact-page-nav .nav-btn {
+    flex: 1;
+  }
+}
