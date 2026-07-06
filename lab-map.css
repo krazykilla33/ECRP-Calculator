@@ -255,20 +255,25 @@ body {
 
 .floating-back-btn {
   position: fixed;
-  rightt: 24px;
+  right: 24px;
   bottom: 24px;
   z-index: 9999;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   padding: 11px 16px;
   border-radius: 999px;
+
   background: rgba(17, 27, 51, 0.92);
   color: #bfdbfe;
   border: 1px solid #36517d;
+
   font-size: 13px;
   font-weight: 900;
   text-decoration: none;
+
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(8px);
 }
