@@ -158,6 +158,34 @@ async function copyOpenLabsToClipboard() {
 
 function productLabel(product) { return product === 'XTC' ? 'Ecstasy' : product; }
 
+function ingredientLabel(ingredient) {
+  const labels = {
+    Plant: 'Plant',
+    Acid: 'Sulfuric Acid',
+    Lime: 'Powdered Lime',
+    Sodium: 'Sodium',
+    Muriatic: 'Muriatic',
+    Toluene: 'Toluene',
+    Lysergic: 'Lysergic',
+    Ammonia: 'Ammonia',
+    Acetone: 'Acetone',
+    Lithium: 'Lithium',
+    Phosphorus: 'Phosphorus',
+    Pseudo: 'Pseudo-ephedrine'
+  };
+
+  return labels[ingredient] || ingredient;
+}
+
+function recipeText(recipe) {
+  return Object.entries(recipe)
+    .map(([ingredient, amount]) => {
+      const label = ingredientLabel(ingredient);
+      return amount > 1 ? `${label} x${amount}` : label;
+    })
+    .join(', ');
+}
+
 function productIcon(product) {
   const icons = {
     Blunt: '🌿',
