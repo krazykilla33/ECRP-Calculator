@@ -676,7 +676,7 @@ th {
 /* Compact drug calculator header */
 .compact-drug-header {
   display: grid;
-  grid-template-columns: minmax(380px, 1fr) auto minmax(430px, auto);
+  grid-template-columns: 1fr auto 1fr;
   align-items: start;
   gap: 18px;
   margin-bottom: 14px;
@@ -699,12 +699,14 @@ th {
 }
 
 .drug-title-line .small-button {
-  min-height: 36px;
-  padding: 8px 12px;
+  min-height: 34px;
+  padding: 7px 12px;
 }
 
+/* Center nav buttons in the middle of the card */
 .drug-header-nav {
   justify-content: center;
+  align-self: start;
   margin-top: 0;
 }
 
@@ -713,30 +715,41 @@ th {
   padding: 8px 13px;
 }
 
+/* Compact right-side tool grid */
 .drug-header-tools {
+  justify-self: end;
   display: grid;
-  grid-template-columns: 165px 1fr;
-  gap: 8px;
+  grid-template-columns: 140px 128px;
+  gap: 6px 8px;
   align-items: center;
+  max-width: 276px;
 }
 
 .drug-header-tools .compact-paste-box,
 .drug-header-tools .secondary,
 .drug-header-tools .toggle {
-  min-height: 36px;
+  min-height: 34px;
+  height: 34px;
+  font-size: 0.82rem;
 }
 
 .drug-header-tools .compact-paste-box {
   min-width: 0;
   width: 100%;
   margin: 0;
-  padding: 8px 12px;
+  padding: 7px 10px;
+}
+
+.drug-header-tools .secondary {
+  padding: 7px 10px;
+  border-radius: 10px;
 }
 
 .bonus-toggle {
   justify-content: flex-start;
   white-space: nowrap;
   padding: 0 4px;
+  font-size: 0.84rem;
 }
 
 .product-reset-btn {
@@ -977,7 +990,8 @@ main {
   }
 
   .drug-header-tools {
-    max-width: 460px;
+    justify-self: start;
+    max-width: 276px;
   }
 }
 
