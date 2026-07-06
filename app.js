@@ -941,7 +941,7 @@ function buildFixedSetRows() {
           <div class="mini-stat"><span>Total drugs</span><strong data-mini="drugs">${batches.toLocaleString()}</strong></div>
           <div class="mini-stat"><span>Weight</span><strong data-mini="weight">${rowWeight.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></div>
           <div class="mini-stat"><span>Time</span><strong data-mini="time">${compactTime(rowTime)}</strong></div>
-          <div class="mini-stat"><span>Ingredients</span><strong>${recipeText(product.recipe)}</strong></div>
+          <div class="mini-stat"><span>Ingredients Order</span><strong>${recipeText(product.recipe)}</strong></div>
        </div>
       </div>
     `;
