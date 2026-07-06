@@ -525,3 +525,63 @@ input[type=number] {
     grid-template-columns: repeat(2, minmax(120px, 1fr));
   }
 }
+
+/* Active lab row: Cooking at | Location | Crack | Coke | Plant */
+.active-lab-card {
+  grid-template-columns: minmax(220px, 1fr) minmax(0, 2fr);
+  gap: 12px;
+  align-items: end;
+}
+
+.lab-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(105px, 1fr));
+  gap: 8px;
+}
+
+.stat-pill {
+  padding: 8px 10px;
+  min-height: 70px;
+}
+
+.stat-pill span {
+  font-size: 0.72rem;
+}
+
+.stat-pill strong {
+  font-size: 1rem;
+}
+
+.map-stat-pill {
+  order: -1;
+}
+
+.map-stat-pill .map-lab-btn {
+  min-height: 28px;
+  padding: 0 8px;
+  font-size: 0.72rem;
+  margin-top: 4px;
+}
+
+/* Responsive stacking */
+@media(max-width: 1100px) {
+  .active-lab-card {
+    grid-template-columns: 1fr;
+  }
+
+  .lab-stats {
+    grid-template-columns: repeat(4, minmax(105px, 1fr));
+  }
+}
+
+@media(max-width: 800px) {
+  .lab-stats {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+}
+
+@media(max-width: 520px) {
+  .lab-stats {
+    grid-template-columns: 1fr;
+  }
+}
