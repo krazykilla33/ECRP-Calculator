@@ -754,6 +754,16 @@ th {
 
 .product-reset-btn {
   width: 100%;
+  background: linear-gradient(180deg, #5f1b1b, #351010);
+  border-color: #9f2a2a;
+  color: #fecaca;
+  font-weight: 800;
+}
+
+.product-reset-btn:hover {
+  background: linear-gradient(180deg, #7f1d1d, #450a0a);
+  border-color: #ef4444;
+  color: #ffffff;
 }
 
 .ocr-inline-status-row {
