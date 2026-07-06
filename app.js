@@ -49,10 +49,10 @@ const TABLES = {
 
 const SET_PRODUCTS = {
   Crack:   { costPerBatch: 200, valuePerBatch: 745, weight: 2,   timeSeconds: 180, recipe: { Plant: 1, Acid: 1, Lime: 1, Sodium: 1 } },
-  Heroin:  { costPerBatch: 255, valuePerBatch: 895, weight: 2.5, timeSeconds: 225, recipe: { Plant: 1, Sodium: 1, Muriatic: 1, Ammonia: 1, Acetone: 1 } },
+  Heroin:  { costPerBatch: 255, valuePerBatch: 895, weight: 2.5, timeSeconds: 225, recipe: { Plant: 1, Muriatic: 1, Ammonia: 1, Acetone: 1, Sodium: 1 } },
   XTC:     { costPerBatch: 155, valuePerBatch: 695, weight: 1.5, timeSeconds: 135, recipe: { Plant: 1, Muriatic: 1, Ammonia: 1 } },
   Cocaine: { costPerBatch: 200, valuePerBatch: 745, weight: 1.5, timeSeconds: 135, recipe: { Plant: 1, Acid: 1, Lime: 1 } },
-  LSD:     { costPerBatch: 255, valuePerBatch: 770, weight: 1.5, timeSeconds: 135, recipe: { Lysergic: 1, Ammonia: 1, Phosphorus: 1 } },
+  LSD:     { costPerBatch: 255, valuePerBatch: 770, weight: 1.5, timeSeconds: 135, recipe: { Lysergic: 1, Phosphorus: 1, Ammonia: 1 } },
   Meth:    { costPerBatch: 255, valuePerBatch: 745, weight: 2,   timeSeconds: 180, recipe: { Pseudo: 1, Toluene: 1, Lithium: 1, Ammonia: 1 } },
   Joint:   { costPerBatch: 0,   valuePerBatch: 570, weight: 1,   timeSeconds: 72,  recipe: { Plant: 2 } },
   Seeds:   { costPerBatch: 0,   valuePerBatch: 0,   weight: 0.5, timeSeconds: 1,   recipe: { Plant: 1 } }
@@ -913,7 +913,7 @@ function buildFixedSetRows() {
           <div class="mini-stat"><span>Total drugs</span><strong data-mini="drugs">${batches.toLocaleString()}</strong></div>
           <div class="mini-stat"><span>Weight</span><strong data-mini="weight">${rowWeight.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></div>
           <div class="mini-stat"><span>Time</span><strong data-mini="time">${compactTime(rowTime)}</strong></div>
-          <div class="mini-stat"><span>Allowed</span><strong>${cfg.allowedProducts.map(productLabel).join(', ')}</strong></div>
+          <div class="mini-stat"><span>Ingredients</span><strong>${recipeText(product.recipe)}</strong></div>
        </div>
       </div>
     `;
