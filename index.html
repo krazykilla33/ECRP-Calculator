@@ -7,17 +7,6 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="hero">
-  <div>
-    <h1>ECRP Lab Tracker</h1>
-    <p>Open labs with map, cooking plans, ingredients, profit, time, and weight.</p>
-  </div>
-
-  <nav class="page-nav">
-    <a class="secondary nav-btn" href="calculator.html">Drug Calculator</a>
-    <a class="secondary nav-btn" href="lab-map.html">Lab Map</a>
-  </nav>
-</header>
 
   <main>
    <section class="card app-lab-card" id="setCalculator">
@@ -27,7 +16,15 @@
           <h2>Open Labs & Cooking Plan</h2>
           <p class="muted">Update the open labs list when a lab opens or closes. Then choose which open lab you are cooking at.</p>
         </div>
-        <div class="last-update-pill">Last updated: <span id="lastUpdate"></span></div>
+
+        <div class="lab-title-actions">
+          <nav class="page-nav compact-page-nav">
+            <a class="secondary nav-btn" href="calculator.html">Drug Calculator</a>
+            <a class="secondary nav-btn" href="lab-map.html">Lab Map</a>
+          </nav>
+
+          <div class="last-update-pill">Last updated: <span id="lastUpdate"></span></div>
+        </div>
       </div>
 
 <div class="lab-app-layout">
