@@ -7,47 +7,49 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="hero">
-    <div>
-      <h1>ECRP Drug Calculator</h1>
-      <p>Product values, bonuses, and quantity breakdowns.</p>
-    </div>
-
-    <nav class="page-nav">
-      <a class="secondary nav-btn" href="index.html">Lab Tracker</a>
-      <a class="secondary nav-btn" href="lab-map.html">Lab Map</a>
-  </nav>
-  </header>
-
   <main>
     <section class="card">
-      <div class="section-title product-title-row">
-        <h2>Product Value Calculator</h2>
+      <div class="section-title compact-drug-header">
+        <div class="drug-header-left">
+          <div class="drug-title-line">
+            <h2>Product Value Calculator</h2>
 
-        <div class="product-tools-row">
-          <button id="togglePriceListBtn" class="secondary small-button" type="button">
-            Price List
-          </button>
-          
+            <button id="togglePriceListBtn" class="secondary small-button" type="button">
+              Price List
+            </button>
+          </div>
+
+          <div class="ocr-inline-status-row">
+            <span id="ocrStatus" class="ocr-status-text">No screenshot</span>
+          </div>
+        </div>
+
+        <nav class="page-nav drug-header-nav">
+          <a class="secondary nav-btn" href="index.html">Lab Tracker</a>
+          <a class="secondary nav-btn" href="lab-map.html">Lab Map</a>
+        </nav>
+
+        <div class="drug-header-tools">
           <div id="ocrPasteBox" class="ocr-paste-box compact-paste-box" tabindex="0">
             Paste Screenshot
           </div>
 
-          <button id="scanScreenshotBtn" class="secondary small-button" type="button">Scan</button>
-          <button id="applyOcrBtn" class="secondary small-button" type="button">Apply</button>
+          <label class="toggle bonus-toggle">
+            <input id="bonusEnabled" type="checkbox" /> Enable bonus
+          </label>
+
+          <button id="scanScreenshotBtn" class="secondary small-button" type="button">
+            Scan
+          </button>
 
           <button id="resetBtn" class="secondary small-button product-reset-btn" type="button">
             Reset Calculator
           </button>
+
+          <button id="applyOcrBtn" class="secondary small-button apply-btn" type="button">
+            Apply
+          </button>
         </div>
-
-        <label class="toggle">
-          <input id="bonusEnabled" type="checkbox" /> Enable bonus
-        </label>
-      </div>
-
-      <div class="ocr-inline-status-row">
-        <span id="ocrStatus" class="ocr-status-text">No screenshot</span>
       </div>
 
       <div id="ocrPreview" class="ocr-preview hidden"></div>
