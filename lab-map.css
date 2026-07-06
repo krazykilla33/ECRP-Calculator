@@ -255,7 +255,7 @@ body {
 
 .floating-back-btn {
   position: fixed;
-  left: 24px;
+  rightt: 24px;
   bottom: 24px;
   z-index: 9999;
   display: inline-flex;
