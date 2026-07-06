@@ -2,7 +2,7 @@
 
 This is a GitHub Pages app converted from `ECRP Calculator spreadsheet`.
 
-## Updating prices or labs
+## Updating prices or labs with Lab Map
 
 Edit `data.js` directly in GitHub. That file contains:
 
