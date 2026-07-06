@@ -427,8 +427,10 @@ async function scanDrugScreenshotFile(file) {
       preview.classList.remove('hidden');
     }
 
+    applyOcrValuesToCalculator();
+
     if (status) {
-      status.textContent = 'Scan complete. Review the values, then click Apply Found Values.';
+      status.textContent = 'Scan complete. Values applied automatically.';
     }
   } catch (error) {
     console.error('OCR scan failed:', error);
@@ -1076,11 +1078,6 @@ if (scanScreenshotBtnEl) {
   });
 }
 
-const applyOcrBtnEl = document.getElementById('applyOcrBtn');
-if (applyOcrBtnEl) {
-  applyOcrBtnEl.addEventListener('click', applyOcrValuesToCalculator);
-}
-
 const togglePriceListBtnEl = document.getElementById('togglePriceListBtn');
 if (togglePriceListBtnEl) {
   togglePriceListBtnEl.addEventListener('click', () => {
@@ -1116,7 +1113,7 @@ if (ocrPasteBoxEl) {
     const preview = document.getElementById('ocrPreview');
 
     if (status) {
-      status.textContent = 'Screenshot pasted. Click Scan Screenshot.';
+      status.textContent = 'Screenshot pasted. Click Scan.';
     }
 
     if (preview) {
