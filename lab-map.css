@@ -234,3 +234,21 @@ body {
     border-top: 1px solid #2b303b;
   }
 }
+
+.back-tracker-btn {
+  display: block;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  background: #1d4ed8;
+  color: #ffffff;
+  border: 1px solid #3b82f6;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.back-tracker-btn:hover {
+  background: #2563eb;
+}
