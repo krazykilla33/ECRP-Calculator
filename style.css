@@ -754,9 +754,19 @@ th {
 
 .product-reset-btn {
   width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-left: 6px;
+  padding-right: 6px;
+  line-height: 1;
+  white-space: nowrap;
   background: linear-gradient(180deg, #5f1b1b, #351010);
   border-color: #9f2a2a;
   color: #fecaca;
+  font-size: 0.82rem;
   font-weight: 800;
 }
 
