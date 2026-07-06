@@ -671,41 +671,96 @@ th {
 }
 
 /* =========================================================
-   11. Product Calculator: OCR / Inline Tools
+   11. Product Calculator: Compact Header / OCR Tools
    ========================================================= */
+/* Compact drug calculator header */
+.compact-drug-header {
+  display: grid;
+  grid-template-columns: minmax(380px, 1fr) auto minmax(430px, auto);
+  align-items: start;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+.drug-header-left {
+  min-width: 0;
+}
+
+.drug-title-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.drug-title-line h2 {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.drug-title-line .small-button {
+  min-height: 36px;
+  padding: 8px 12px;
+}
+
+.drug-header-nav {
+  justify-content: center;
+  margin-top: 0;
+}
+
+.drug-header-nav .nav-btn {
+  min-height: 36px;
+  padding: 8px 13px;
+}
+
+.drug-header-tools {
+  display: grid;
+  grid-template-columns: 165px 1fr;
+  gap: 8px;
+  align-items: center;
+}
+
+.drug-header-tools .compact-paste-box,
+.drug-header-tools .secondary,
+.drug-header-tools .toggle {
+  min-height: 36px;
+}
+
+.drug-header-tools .compact-paste-box {
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+  padding: 8px 12px;
+}
+
+.bonus-toggle {
+  justify-content: flex-start;
+  white-space: nowrap;
+  padding: 0 4px;
+}
+
+.product-reset-btn {
+  width: 100%;
+}
+
+.apply-btn {
+  grid-column: 1 / 2;
+}
+
+.ocr-inline-status-row {
+  margin-top: 12px;
+}
+
+main {
+  padding-top: 14px;
+}
+
 #productBreakdown {
   margin-top: 0;
 }
 
 .product-value-title {
   margin-bottom: 12px;
-}
-
-.product-title-row {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 14px;
-}
-
-.product-title-row h2 {
-  justify-self: start;
-}
-
-.product-tools-row {
-  justify-self: center;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.product-title-row .toggle {
-  justify-self: end;
-}
-
-.product-reset-btn {
-  justify-self: center;
 }
 
 .compact-paste-box {
@@ -725,10 +780,6 @@ th {
 .compact-paste-box:focus {
   border-color: #38bdf8;
   box-shadow: 0 0 0 2px #38bdf833;
-}
-
-.ocr-inline-status-row {
-  margin-top: 8px;
 }
 
 .ocr-status-text {
@@ -916,6 +967,43 @@ th {
 /* =========================================================
    14. Responsive Rules
    ========================================================= */
+@media(max-width: 1150px) {
+  .compact-drug-header {
+    grid-template-columns: 1fr;
+  }
+
+  .drug-header-nav {
+    justify-content: flex-start;
+  }
+
+  .drug-header-tools {
+    max-width: 460px;
+  }
+}
+
+@media(max-width: 650px) {
+  .drug-title-line h2 {
+    white-space: normal;
+  }
+
+  .drug-header-tools {
+    grid-template-columns: 1fr;
+    max-width: none;
+    width: 100%;
+  }
+
+  .apply-btn {
+    grid-column: auto;
+  }
+
+  .drug-header-nav .nav-btn,
+  .drug-header-tools .secondary,
+  .drug-header-tools .compact-paste-box,
+  .drug-header-tools .toggle {
+    width: 100%;
+  }
+}
+
 @media(max-width: 1200px) {
   .product-dashboard {
     grid-template-columns: 1fr 1fr;
@@ -960,28 +1048,6 @@ th {
   }
 }
 
-@media(max-width: 900px) {
-  .product-title-row {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .product-title-row h2,
-  .product-tools-row,
-  .product-title-row .toggle {
-    justify-self: start;
-  }
-
-  .product-tools-row {
-    width: 100%;
-  }
-
-  .compact-paste-box,
-  .product-tools-row button {
-    flex: 1;
-    min-width: 120px;
-  }
-}
 
 @media(max-width: 850px) {
   .lab-title-row {
@@ -1067,124 +1133,5 @@ th {
 @media(max-width: 520px) {
   .lab-stats {
     grid-template-columns: 1fr;
-  }
-}
-
-/* Compact drug calculator header */
-.compact-drug-header {
-  display: grid;
-  grid-template-columns: minmax(380px, 1fr) auto minmax(430px, auto);
-  align-items: start;
-  gap: 18px;
-  margin-bottom: 14px;
-}
-
-.drug-header-left {
-  min-width: 0;
-}
-
-.drug-title-line {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.drug-title-line h2 {
-  margin: 0;
-  white-space: nowrap;
-}
-
-.drug-title-line .small-button {
-  min-height: 36px;
-  padding: 8px 12px;
-}
-
-.drug-header-nav {
-  justify-content: center;
-  margin-top: 0;
-}
-
-.drug-header-nav .nav-btn {
-  min-height: 36px;
-  padding: 8px 13px;
-}
-
-.drug-header-tools {
-  display: grid;
-  grid-template-columns: 165px 1fr;
-  gap: 8px;
-  align-items: center;
-}
-
-.drug-header-tools .compact-paste-box,
-.drug-header-tools .secondary,
-.drug-header-tools .toggle {
-  min-height: 36px;
-}
-
-.drug-header-tools .compact-paste-box {
-  min-width: 0;
-  width: 100%;
-  margin: 0;
-  padding: 8px 12px;
-}
-
-.bonus-toggle {
-  justify-content: flex-start;
-  white-space: nowrap;
-  padding: 0 4px;
-}
-
-.product-reset-btn {
-  width: 100%;
-}
-
-.apply-btn {
-  grid-column: 1 / 2;
-}
-
-.ocr-inline-status-row {
-  margin-top: 12px;
-}
-
-main {
-  padding-top: 14px;
-}
-
-@media(max-width: 1150px) {
-  .compact-drug-header {
-    grid-template-columns: 1fr;
-  }
-
-  .drug-header-nav {
-    justify-content: flex-start;
-  }
-
-  .drug-header-tools {
-    max-width: 460px;
-  }
-}
-
-@media(max-width: 650px) {
-  .drug-title-line h2 {
-    white-space: normal;
-  }
-
-  .drug-header-tools {
-    grid-template-columns: 1fr;
-    max-width: none;
-    width: 100%;
-  }
-
-  .apply-btn {
-    grid-column: auto;
-  }
-
-  .drug-header-nav .nav-btn,
-  .drug-header-tools .secondary,
-  .drug-header-tools .compact-paste-box,
-  .drug-header-tools .toggle {
-    width: 100%;
   }
 }
