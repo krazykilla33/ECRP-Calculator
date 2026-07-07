@@ -828,11 +828,20 @@ function calculateProducts() {
 
 function compactTime(seconds) {
   seconds = Math.round(seconds || 0);
+
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
-  if (h && m) return `${h}h ${m}m`;
+  const s = seconds % 60;
+
+  if (h && m && s) return `${h}h ${m}min ${s}sec`;
+  if (h && m) return `${h}h ${m}min`;
+  if (h && s) return `${h}h ${s}sec`;
   if (h) return `${h}h`;
-  return `${m}m`;
+
+  if (m && s) return `${m}min ${s}sec`;
+  if (m) return `${m}min`;
+
+  return `${s}sec`;
 }
 
 function updateCookCardStats(rowKey) {
