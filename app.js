@@ -656,7 +656,25 @@ function buildQuantityGrid() {
   const el = document.getElementById('quantityGrid');
   if (!el) return;
 
+  const boostOrderHtml = `
+    <div class="boost-order-bar">
+      <span class="boost-order-title">Boost Order</span>
+
+      <div class="boost-order-list">
+        ${DATA.products.map((product, index) => `
+          <span class="boost-order-item">
+            <span>${productIcon(product)}</span>
+            <span>${productLabel(product)}</span>
+          </span>
+          ${index < DATA.products.length - 1 ? '<span class="boost-order-arrow">→</span>' : ''}
+        `).join('')}
+      </div>
+    </div>
+  `;
+
   let html = `
+    ${boostOrderHtml}
+
     <table>
       <thead>
         <tr>
@@ -664,10 +682,8 @@ function buildQuantityGrid() {
           ${DATA.products.map((product, index) => `
             <th>
               <span class="product-table-head">
-                ${index === 0 ? '<span class="boost-order-label">Boost Order</span><span class="product-arrow">→</span>' : ''}
                 <span>${productIcon(product)}</span>
                 <span>${productLabel(product)}</span>
-                ${index < DATA.products.length - 1 ? '<span class="product-arrow">→</span>' : ''}
               </span>
             </th>
           `).join('')}
