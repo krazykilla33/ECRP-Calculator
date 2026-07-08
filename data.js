@@ -189,7 +189,7 @@ window.ECRP_DATA = {
     },
     {
       "name": "Elysian",
-      "cokeTables": 4.0,
+      "cokeTables": 6.0,
       "crackTables": 6.0,
       "plantTables": 3.0,
       "id": "elysian",
