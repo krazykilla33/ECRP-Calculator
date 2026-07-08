@@ -231,18 +231,47 @@ th {
   white-space: nowrap;
 }
 
-.product-arrow {
-  color: #60a5fa;
-  font-weight: 900;
-  opacity: 0.9;
+.boost-order-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 10px;
+  padding: 9px 12px;
+  border: 1px solid #263756;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #101a31, #0b1325);
+  color: #bfdbfe;
 }
 
-.boost-order-label {
-  color: #93c5fd;
-  font-size: 0.78rem;
+.boost-order-title {
+  color: #7dd3fc;
+  font-size: 0.76rem;
   font-weight: 900;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.boost-order-list {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.boost-order-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: #dbeafe;
+}
+
+.boost-order-arrow {
+  color: #60a5fa;
+  font-weight: 900;
+  opacity: 0.85;
 }
 
 .summary-grid {
