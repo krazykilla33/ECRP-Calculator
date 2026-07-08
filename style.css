@@ -223,6 +223,28 @@ th {
   top: 0;
 }
 
+.product-table-head {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.product-arrow {
+  color: #60a5fa;
+  font-weight: 900;
+  opacity: 0.9;
+}
+
+.boost-order-label {
+  color: #93c5fd;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
