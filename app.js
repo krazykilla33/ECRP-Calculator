@@ -661,11 +661,13 @@ function buildQuantityGrid() {
       <thead>
         <tr>
           <th>Tier</th>
-          ${DATA.products.map(product => `
+          ${DATA.products.map((product, index) => `
             <th>
               <span class="product-table-head">
+                ${index === 0 ? '<span class="boost-order-label">Boost Order</span><span class="product-arrow">→</span>' : ''}
                 <span>${productIcon(product)}</span>
                 <span>${productLabel(product)}</span>
+                ${index < DATA.products.length - 1 ? '<span class="product-arrow">→</span>' : ''}
               </span>
             </th>
           `).join('')}
