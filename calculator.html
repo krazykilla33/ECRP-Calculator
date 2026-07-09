@@ -29,16 +29,10 @@
           <a class="secondary nav-btn" href="lab-map.html">Lab Map</a>
         </nav>
 
-        <div id="ocrPasteBox" class="ocr-paste-box compact-paste-box" tabindex="0">
-          Paste or Upload
-        </div>
-
-        <input
-          id="ocrFileInput"
-          type="file"
-          accept="image/*"
-          class="hidden"
-        />
+        <div class="drug-header-tools">
+          <div id="ocrPasteBox" class="ocr-paste-box compact-paste-box" tabindex="0">
+            Paste / Upload
+          </div>
 
           <label class="toggle bonus-toggle">
             <input id="bonusEnabled" type="checkbox" /> Enable bonus
@@ -53,6 +47,13 @@
           </button>
         </div>
       </div>
+
+      <input
+        id="ocrFileInput"
+        type="file"
+        accept="image/*"
+        class="hidden"
+      />
 
       <div id="ocrPreview" class="ocr-preview hidden"></div>
 
