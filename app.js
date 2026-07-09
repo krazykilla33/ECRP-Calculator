@@ -1150,33 +1150,83 @@ if (togglePriceListBtnEl) {
   });
 }
 
+function setPendingOcrImage(file, sourceLabel = 'Screenshot') {
+  const status = document.getElementById('ocrStatus');
+  const preview = document.getElementById('ocrPreview');
+  const pasteBox = document.getElementById('ocrPasteBox');
+
+  if (!file) {
+    if (status) status.textContent = 'No screenshot found. Try clicking Paste / Upload and selecting the image.';
+    return;
+  }
+
+  if (!file.type || !file.type.startsWith('image/')) {
+    if (status) status.textContent = 'That file is not an image. Upload a PNG, JPG, or screenshot.';
+    return;
+  }
+
+  pendingOcrImageFile = file;
+  pendingOcrValues = null;
+
+  if (preview) {
+    preview.textContent = '';
+    preview.classList.add('hidden');
+  }
+
+  if (pasteBox) {
+    pasteBox.textContent = `${sourceLabel} ✓`;
+  }
+
+  if (status) {
+    status.textContent = `${sourceLabel} loaded. Click Scan.`;
+  }
+}
+
 const ocrPasteBoxEl = document.getElementById('ocrPasteBox');
+const ocrFileInputEl = document.getElementById('ocrFileInput');
+
 if (ocrPasteBoxEl) {
   ocrPasteBoxEl.addEventListener('click', () => {
     ocrPasteBoxEl.focus();
+
+    if (ocrFileInputEl) {
+      ocrFileInputEl.click();
+    }
+  });
+
+  ocrPasteBoxEl.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+
+      if (ocrFileInputEl) {
+        ocrFileInputEl.click();
+      }
+    }
   });
 
   document.addEventListener('paste', e => {
     const items = Array.from(e.clipboardData?.items || []);
     const imageItem = items.find(item => item.type.startsWith('image/'));
 
-    if (!imageItem) return;
-
-    pendingOcrImageFile = imageItem.getAsFile();
-
-    const status = document.getElementById('ocrStatus');
-    const preview = document.getElementById('ocrPreview');
-
-    if (status) {
-      status.textContent = 'Screenshot pasted. Click Scan.';
+    if (!imageItem) {
+      const status = document.getElementById('ocrStatus');
+      if (status) status.textContent = 'Clipboard did not contain an image. Try clicking Paste / Upload and selecting the screenshot.';
+      return;
     }
 
-    if (preview) {
-      preview.textContent = '';
-      preview.classList.add('hidden');
-    }
+    setPendingOcrImage(imageItem.getAsFile(), 'Pasted');
+  });
+}
 
-    ocrPasteBoxEl.textContent = 'Pasted ✓';
+if (ocrFileInputEl) {
+  ocrFileInputEl.addEventListener('change', e => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    setPendingOcrImage(file, 'Uploaded');
+
+    e.target.value = '';
   });
 }
 
