@@ -178,7 +178,7 @@ window.ECRP_DATA = {
     {
       "name": "Voodoo (Banning)",
       "cokeTables": 8.0,
-      "crackTables": 3.0,
+      "crackTables": 8.0,
       "plantTables": 0.0,
       "id": "voodoo-banning",
       "map": {
