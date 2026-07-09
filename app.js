@@ -658,7 +658,7 @@ function buildQuantityGrid() {
 
   const boostOrderHtml = `
     <div class="boost-order-bar">
-      <span class="boost-order-title">Boost Order</span>
+      <span class="boost-order-title">Sell Boost Order</span>
 
       <div class="boost-order-list">
         ${DATA.products.map((product, index) => `
