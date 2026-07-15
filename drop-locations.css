@@ -31,7 +31,34 @@ button { -webkit-tap-highlight-color: transparent; }
 .placement-banner { position: absolute; z-index: 700; left: 50%; bottom: 24px; transform: translateX(-50%); max-width: min(650px, calc(100% - 40px)); padding: 11px 16px; border: 1px solid rgba(49,214,199,.48); border-radius: 12px; background: rgba(8,17,24,.92); color: #d7fffb; font-size: 13px; font-weight: 700; text-align: center; backdrop-filter: blur(12px); box-shadow: 0 12px 32px rgba(0,0,0,.35); }
 
 .sidebar { display: flex; flex-direction: column; min-width: 0; background: linear-gradient(180deg, #101722 0%, #0b111a 100%); border-left: 1px solid var(--line); box-shadow: -18px 0 55px rgba(0,0,0,.28); overflow: hidden; }
-.sidebar-header { display: flex; justify-content: space-between; gap: 16px; padding: 22px 20px 14px; }
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 20px 14px;
+}
+
+.sidebar-back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 20px 12px;
+  padding: 10px 14px;
+  border: 1px solid rgba(49,214,199,.35);
+  border-radius: 10px;
+  background: rgba(49,214,199,.11);
+  color: #d7fffb;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0,0,0,.22);
+}
+
+.sidebar-back-button:hover {
+  border-color: var(--accent);
+  background: rgba(49,214,199,.18);
+  color: #fff;
+}
 .eyebrow { margin: 0 0 5px; color: var(--accent); font-size: 10px; font-weight: 900; letter-spacing: .19em; }
 h1 { margin: 0; font-size: 25px; line-height: 1.1; letter-spacing: -.02em; }
 .subtitle { margin: 7px 0 0; color: var(--muted); font-size: 12px; }
@@ -207,7 +234,7 @@ body.admin-edit-mode .location-card {
   .back-to-tracker {
     position: fixed;
     z-index: 3000;
-    left: 18px;
+    right: 430px;
     bottom: 18px;
     display: inline-flex;
     align-items: center;
@@ -268,5 +295,10 @@ body.admin-edit-mode .location-card {
   .lightbox-image {
     max-width: 96vw;
     max-height: 86vh;
+  }
+
+  .back-to-tracker {
+    right: 18px;
+    bottom: calc(42vh + 18px);
   }
 }
