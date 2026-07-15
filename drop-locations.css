@@ -243,4 +243,27 @@ body.admin-edit-mode .location-card {
     max-width: 96vw;
     max-height: 86vh;
   }
+
+  .back-to-tracker {
+    position: absolute;
+    z-index: 800;
+    left: 18px;
+    bottom: 18px;
+    padding: 10px 14px;
+    border: 1px solid rgba(49,214,199,.35);
+    border-radius: 10px;
+    background: rgba(8,13,21,.9);
+    color: #d7fffb;
+    font-size: 12px;
+    font-weight: 800;
+    text-decoration: none;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 28px rgba(0,0,0,.35);
+  }
+
+  .back-to-tracker:hover {
+    border-color: var(--accent);
+    background: rgba(49,214,199,.14);
+    color: #fff;
+  }
 }
