@@ -477,9 +477,9 @@ window.ECRP_DATA = {
     },
     {
       "name": "NOOSE",
-      "cokeTables": 5.0,
-      "crackTables": 3.0,
-      "plantTables": 2.0,
+      "cokeTables": 6.0,
+      "crackTables": 5.0,
+      "plantTables": 1.0,
       "id": "noose",
       "map": {
         "x": 847,
